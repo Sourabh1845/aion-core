@@ -12,6 +12,7 @@ git add .
 git commit -m "Launch AION Core 0.8.0"
 git remote add origin https://github.com/Sourabh1845/aion-core.git
 git push -u origin main
+git push origin v0.8.0
 ```
 
 ## GitHub Settings
@@ -32,6 +33,9 @@ git push -u origin main
 - Create release:
   - Tag: `v0.8.0`
   - Title: `AION Core 0.8.0`
+- Add repository secret for PyPI publishing:
+  - Name: `PYPI_API_TOKEN`
+  - Value: your PyPI project/account API token
 
 ## Release Notes
 
@@ -57,3 +61,14 @@ $env:PYTHONPATH='src'
 python -m unittest discover -s tests
 python -m aion_core.demo
 ```
+
+## CI
+
+The repo includes:
+
+- `.github/workflows/ci.yml`
+  - tests Python 3.10, 3.11, 3.12
+  - runs `aion-demo`
+- `.github/workflows/python-publish.yml`
+  - builds package when a GitHub release is published
+  - uploads to PyPI using `PYPI_API_TOKEN`

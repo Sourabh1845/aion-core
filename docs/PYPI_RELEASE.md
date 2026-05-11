@@ -46,6 +46,21 @@ aion-demo
 python -m twine upload dist/*
 ```
 
+## GitHub Release Publishing
+
+The repository also includes a GitHub Actions workflow:
+
+```text
+.github/workflows/python-publish.yml
+```
+
+To use it:
+
+1. Create a PyPI API token.
+2. Add it as GitHub repository secret `PYPI_API_TOKEN`.
+3. Publish GitHub release `v0.8.0`.
+4. The workflow builds and uploads `aion-core` to PyPI.
+
 ## After Publish
 
 ```powershell
