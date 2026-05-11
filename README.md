@@ -163,6 +163,7 @@ Useful docs:
 - [Filesystem MCP example](docs/FILESYSTEM_MCP_EXAMPLE.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Launch checklist](docs/LAUNCH_CHECKLIST.md)
+- [Launch outreach kit](docs/LAUNCH_OUTREACH_KIT.md)
 - [GitHub launch](docs/GITHUB_LAUNCH.md)
 - [PyPI release](docs/PYPI_RELEASE.md)
 - [Website copy](docs/WEBSITE_COPY.md)

@@ -46,11 +46,19 @@ Before GitHub/early-user launch:
 - [x] Add PyPI release checklist.
 - [x] Add GitHub launch checklist.
 - [x] Add website landing page copy.
-- [ ] Create GitHub repository `Sourabh1845/aion-core`.
-- [ ] Push source to GitHub.
-- [ ] Enable GitHub Pages from `/docs`.
-- [ ] Publish `aion-core==0.8.0` to PyPI.
+- [x] Create GitHub repository `Sourabh1845/aion-core`.
+- [x] Push source to GitHub.
+- [x] Enable GitHub Pages from `/docs`.
+- [x] Publish `aion-core==0.8.0` to PyPI.
 - [ ] Add first 20 target users for outreach.
 - [ ] Record and upload 60-90 second demo video.
 - [ ] Add screenshot/video link to README.
-- [ ] Publish first release tag.
+- [x] Publish first release tag.
+
+After public launch:
+
+- [ ] Add repo description and topics.
+- [ ] Publish first launch post.
+- [ ] Send first 20 outreach messages.
+- [ ] Track feedback and requested integrations.
+- [ ] Convert 1-3 testers into setup/audit calls.
