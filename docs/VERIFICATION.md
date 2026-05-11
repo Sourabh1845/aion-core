@@ -10,7 +10,7 @@ python -m unittest discover -s tests
 Result:
 
 ```text
-Ran 19 tests
+Ran 20 tests
 OK
 ```
 
@@ -48,6 +48,21 @@ Stage 8 control panel:
 Cloud backend syntax/import verified.
 Cloud endpoints added: /control-panel/summary and /approvals.
 Cloud dashboard UI includes Load Control Panel, summary cards, and pending approval list.
+```
+
+Proof Pack:
+
+```powershell
+$env:PYTHONPATH='src'
+python examples\proof_pack\agent_workflow_proof.py --output-dir test-output\proof-pack-final
+```
+
+Result:
+
+```text
+AION Core Agent Workflow Proof Pack
+Scenarios: 6/6 passed
+Receipts: 5 hash-verified
 ```
 
 Receipt verification:

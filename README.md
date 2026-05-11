@@ -56,6 +56,24 @@ This proves the infrastructure wedge:
 - approval-required team actions create approval records
 - every decision gets a receipt
 
+## Proof Pack
+
+AION Core includes deterministic agent-workflow proof tests that model
+LangChain-style, CrewAI-style, Groq-style, and raw MCP workflows.
+
+```powershell
+$env:PYTHONPATH='src'
+python examples\proof_pack\agent_workflow_proof.py
+```
+
+Expected result:
+
+```text
+AION Core Agent Workflow Proof Pack
+Scenarios: 6/6 passed
+Receipts: 5 hash-verified
+```
+
 ## Run Guard
 
 Check a generic action:
@@ -152,6 +170,8 @@ Useful docs:
 - [AION Guard](docs/GUARD.md)
 - [AION Receipts](docs/RECEIPTS.md)
 - [AION Scan](docs/SCAN.md)
+- [AION Proof Pack](docs/PROOF_PACK.md)
+- [Real agent test plan](docs/REAL_AGENT_TESTS.md)
 - [Team policy and approvals](docs/TEAM_POLICY_APPROVALS.md)
 - [Stage 5 Cloud alignment](docs/STAGE5_CLOUD_ALIGNMENT.md)
 - [AION Cloud control panel](docs/STAGE8_CONTROL_PANEL.md)

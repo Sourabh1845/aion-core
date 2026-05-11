@@ -24,3 +24,6 @@ jobs:
         run: |
           python -m pip install -e .
           aion-demo
+      - name: Run proof pack
+        run: |
+          python examples/proof_pack/agent_workflow_proof.py

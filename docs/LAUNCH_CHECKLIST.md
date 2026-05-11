@@ -54,6 +54,8 @@ Before GitHub/early-user launch:
 - [ ] Record and upload 60-90 second demo video.
 - [ ] Add screenshot/video link to README.
 - [x] Publish first release tag.
+- [x] Add deterministic AION Proof Pack.
+- [x] Add Proof Pack to CI.
 
 After public launch:
 
