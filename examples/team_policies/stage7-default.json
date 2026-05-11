@@ -1,0 +1,40 @@
+{
+  "team_id": "demo-team",
+  "default_decision": "allow",
+  "rules": [
+    {
+      "id": "block-secret-exfiltration",
+      "decision": "block",
+      "reason": "Secret-like data cannot be sent by agents.",
+      "match": {
+        "argument_regex": [
+          "password\\s*[:=]",
+          "api[_-]?key",
+          "secret[_-]?key"
+        ]
+      }
+    },
+    {
+      "id": "approval-production-mutation",
+      "decision": "approval_required",
+      "reason": "Production mutations require team approval.",
+      "approvers": [
+        "security",
+        "platform"
+      ],
+      "approval_ttl_minutes": 30,
+      "match": {
+        "action_type": [
+          "cloud.*",
+          "deploy.*"
+        ],
+        "argument_regex": [
+          "\\bproduction\\b",
+          "\\bdelete\\b",
+          "\\bdestroy\\b",
+          "\\bterminate\\b"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "raw-filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\Users\\SOURABH RANJAN"
+      ]
+    }
+  }
+}

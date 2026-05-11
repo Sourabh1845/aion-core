@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aion-core"
+version = "0.8.0"
+description = "AION Core runtime security layer for AI agent tool-call control, receipts, scanning, and approvals."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Sourabh Ranjan Sahoo" }]
+license = "MIT"
+keywords = ["ai-agents", "mcp", "firewall", "security", "policy"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Security",
+  "Topic :: Software Development :: Libraries :: Python Modules"
+]
+
+[project.scripts]
+aion-mcp-firewall = "aion_core.cli:main"
+aion-demo = "aion_core.demo:main"
+aion-stage6-demo = "aion_core.demo:main"
+aion-receipts = "aion_core.receipt_cli:main"
+aion-guard = "aion_core.guard_cli:main"
+aion-scan = "aion_core.scan_cli:main"
+aion-team = "aion_core.team_cli:main"
+
+[project.urls]
+Homepage = "https://sourabh1845.github.io/aion-core/"
+Repository = "https://github.com/Sourabh1845/aion-core"
+Issues = "https://github.com/Sourabh1845/aion-core/issues"
+Documentation = "https://github.com/Sourabh1845/aion-core/tree/main/docs"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "aion-protected-filesystem": {
+      "command": "aion-mcp-firewall",
+      "args": [
+        "--policy",
+        "examples/policies/stage6-default.json",
+        "--receipt-log",
+        "receipts/filesystem.jsonl",
+        "--agent-id",
+        "claude-desktop",
+        "--owner",
+        "local-dev",
+        "--",
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\Users\\SOURABH RANJAN"
+      ]
+    }
+  }
+}

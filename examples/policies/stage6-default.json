@@ -1,0 +1,50 @@
+{
+  "default_action": "allow",
+  "rules": [
+    {
+      "id": "block-destructive-shell",
+      "action": "block",
+      "reason": "Destructive shell command patterns require explicit approval.",
+      "match": {
+        "tool": ["shell", "run_command", "powershell", "terminal"],
+        "argument_contains": [
+          "rm -rf",
+          "remove-item",
+          "del /s",
+          "format ",
+          "git reset --hard",
+          "drop database",
+          "truncate table"
+        ]
+      }
+    },
+    {
+      "id": "block-secret-exfiltration",
+      "action": "block",
+      "reason": "Potential secret exfiltration attempt.",
+      "match": {
+        "tool": "*",
+        "argument_regex": [
+          "api[_-]?key",
+          "secret[_-]?key",
+          "bearer\\s+[a-z0-9._-]+",
+          "password\\s*[:=]"
+        ]
+      }
+    },
+    {
+      "id": "block-production-cloud-mutations",
+      "action": "block",
+      "reason": "Production cloud mutations must go through approved deployment flow.",
+      "match": {
+        "tool": ["aws*", "gcloud*", "azure*"],
+        "argument_regex": [
+          "\\bdelete\\b",
+          "\\bterminate\\b",
+          "\\bdestroy\\b",
+          "\\bproduction\\b"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "jsonrpc": "2.0",
+  "id": 101,
+  "method": "tools/call",
+  "params": {
+    "name": "shell",
+    "arguments": {
+      "command": "rm -rf /tmp/aion"
+    }
+  }
+}

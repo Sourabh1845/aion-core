@@ -1,0 +1,11 @@
+{
+  "jsonrpc": "2.0",
+  "id": 103,
+  "method": "tools/call",
+  "params": {
+    "name": "read_file",
+    "arguments": {
+      "path": "README.md"
+    }
+  }
+}

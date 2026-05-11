@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "aion-protected-filesystem": {
+      "command": "python",
+      "args": [
+        "-m",
+        "aion_core.cli",
+        "--policy",
+        "examples/policies/stage6-default.json",
+        "--receipt-log",
+        "receipts/filesystem.jsonl",
+        "--agent-id",
+        "local-agent",
+        "--owner",
+        "local-dev",
+        "--",
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\Users\\SOURABH RANJAN"
+      ],
+      "env": {
+        "PYTHONPATH": "src"
+      }
+    }
+  }
+}

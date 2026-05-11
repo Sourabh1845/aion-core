@@ -1,0 +1,4 @@
+{
+  "environment": "production",
+  "command": "delete service payment-api"
+}
