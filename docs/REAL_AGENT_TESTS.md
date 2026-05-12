@@ -29,7 +29,7 @@ Verified locally:
 
 - LangChain `1.2.18`: passed
 - CrewAI `1.14.4`: passed
-- Groq `1.2.0`: harness ready, live API requires `GROQ_API_KEY`
+- Groq `1.2.0`: live tool-calling test passed with `llama-3.1-8b-instant`
 
 ### LangChain
 
@@ -77,14 +77,6 @@ python examples\real_integrations\groq_live_test.py --require-api-key
 ## Public Claim Language
 
 Use this wording now:
-
-```text
-AION Core includes deterministic proof tests plus real SDK integration tests for
-LangChain and CrewAI. A Groq live tool-calling harness is included and requires a
-GROQ_API_KEY to execute.
-```
-
-Use this wording only after the Groq live command passes with a real key:
 
 ```text
 AION Core has been tested with LangChain, CrewAI, Groq live function calls, and

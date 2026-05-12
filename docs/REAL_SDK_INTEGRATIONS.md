@@ -8,7 +8,7 @@ Current verified status:
 |---|---:|---|---|
 | LangChain | `1.2.18` | Passed | Uses real `langchain_core.tools.StructuredTool`. |
 | CrewAI | `1.14.4` | Passed | Uses real `crewai.Agent`, `crewai.Task`, and `crewai.tools.BaseTool`. |
-| Groq | `1.2.0` | Harness ready | Live API test requires `GROQ_API_KEY`. No fake pass is recorded without a key. |
+| Groq | `1.2.0` | Passed | Uses real `groq.Groq.chat.completions.create` live tool calling with `llama-3.1-8b-instant`. |
 
 ## Setup
 
@@ -27,7 +27,7 @@ $env:PYTHONPATH='src;examples\real_integrations'
 test-output\real-sdk-venv\Scripts\python.exe examples\real_integrations\run_real_sdk_tests.py --output-dir test-output\real-sdk-final
 ```
 
-Verified local result:
+Verified local result without `GROQ_API_KEY` in the runner environment:
 
 ```text
 AION + LangChain real SDK test
@@ -92,4 +92,12 @@ What it verifies when a key is present:
 - A safe function call is allowed.
 - Receipts are hash-verified.
 
-No website/public claim should say "Groq live passed" until this command runs with a real `GROQ_API_KEY`.
+Verified live result after setting `GROQ_API_KEY`:
+
+```text
+AION + Groq live SDK test
+Scenarios: 2/2 passed
+Receipts: 2 hash-verified
+```
+
+The API key used for local verification was generated with a 90-day expiration.

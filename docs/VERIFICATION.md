@@ -11,7 +11,7 @@ Result:
 
 ```text
 Base environment:
-Ran 22 tests
+Ran 23 tests
 OK (skipped=2)
 
 Real SDK venv:
@@ -92,6 +92,39 @@ AION + Groq live SDK test
 SKIPPED: GROQ_API_KEY is not set
 
 Real SDK summary: 2 passed, 1 skipped, 0 failed
+```
+
+Groq live verification:
+
+```powershell
+$env:GROQ_API_KEY='90-day Groq key'
+$env:PYTHONPATH='src;examples\real_integrations'
+test-output\real-sdk-venv\Scripts\python.exe examples\real_integrations\groq_live_test.py --require-api-key --output-dir test-output\real-sdk-final\groq
+```
+
+Result:
+
+```text
+AION + Groq live SDK test
+Scenarios: 2/2 passed
+Receipts: 2 hash-verified
+```
+
+Real-world capacity:
+
+```powershell
+$env:PYTHONPATH='src'
+python examples\real_world_capacity\release_ops_capacity_test.py --output-dir test-output\real-world-final
+```
+
+Result:
+
+```text
+AION Real-World Capacity Test
+Workflow: release ops agent production readiness
+Scenarios: 8/8 passed
+Receipts: 5 hash-verified
+Pending approvals: 1
 ```
 
 Receipt verification:

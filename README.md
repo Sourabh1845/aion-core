@@ -78,7 +78,26 @@ Real SDK integration tests are also included:
 
 - LangChain `1.2.18`: real `StructuredTool` guard test passed.
 - CrewAI `1.14.4`: real `Agent`, `Task`, and `BaseTool` guard test passed.
-- Groq `1.2.0`: live tool-calling harness included; requires `GROQ_API_KEY`.
+- Groq `1.2.0`: real live function-calling test passed with `llama-3.1-8b-instant`.
+
+## Real-World Capacity Test
+
+AION Core includes an end-to-end release-ops capacity test that exercises all 8
+MVP layers together.
+
+```powershell
+$env:PYTHONPATH='src'
+python examples\real_world_capacity\release_ops_capacity_test.py --output-dir test-output\real-world-final
+```
+
+Expected result:
+
+```text
+AION Real-World Capacity Test
+Scenarios: 8/8 passed
+Receipts: 5 hash-verified
+Pending approvals: 1
+```
 
 ## Run Guard
 
@@ -179,6 +198,7 @@ Useful docs:
 - [AION Proof Pack](docs/PROOF_PACK.md)
 - [Real agent test plan](docs/REAL_AGENT_TESTS.md)
 - [Real SDK integrations](docs/REAL_SDK_INTEGRATIONS.md)
+- [Real-world capacity test](docs/REAL_WORLD_CAPACITY_TEST.md)
 - [Team policy and approvals](docs/TEAM_POLICY_APPROVALS.md)
 - [Stage 5 Cloud alignment](docs/STAGE5_CLOUD_ALIGNMENT.md)
 - [AION Cloud control panel](docs/STAGE8_CONTROL_PANEL.md)

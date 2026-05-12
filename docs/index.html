@@ -163,15 +163,30 @@ Receipts: 5 hash-verified</pre>
       <h2>Real SDK Tests</h2>
       <p>
         AION Core also includes real SDK integration tests. LangChain 1.2.18 and
-        CrewAI 1.14.4 passed local integration tests against their actual tool
-        APIs. A Groq live tool-calling harness is included and requires a
-        GROQ_API_KEY before public pass status is claimed.
+        CrewAI 1.14.4 passed integration tests against their actual tool APIs.
+        Groq 1.2.0 passed a live tool-calling test with llama-3.1-8b-instant.
       </p>
       <div class="grid">
         <div class="card"><strong>LangChain</strong>Real StructuredTool calls: destructive shell blocked before function execution, safe read allowed.</div>
         <div class="card"><strong>CrewAI</strong>Real Agent, Task, and BaseTool objects: destructive tool blocked, safe lookup allowed.</div>
-        <div class="card"><strong>Groq</strong>Real Groq SDK harness for live function calling, gated by API key.</div>
+        <div class="card"><strong>Groq</strong>Real live function call: destructive shell blocked, safe ticket summary allowed.</div>
       </div>
+    </section>
+
+    <section class="section">
+      <h2>Real-World Capacity</h2>
+      <p>
+        A release-ops agent workflow exercises all 8 MVP layers together:
+        Scan, Guard, Receipts, Cloud-ready bundle, MCP Firewall, Team Policy,
+        Control Panel summary, and report generation.
+      </p>
+      <pre>$env:PYTHONPATH='src'
+python examples\real_world_capacity\release_ops_capacity_test.py
+
+AION Real-World Capacity Test
+Scenarios: 8/8 passed
+Receipts: 5 hash-verified
+Pending approvals: 1</pre>
     </section>
 
     <footer>

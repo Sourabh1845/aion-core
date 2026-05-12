@@ -59,6 +59,8 @@ Before GitHub/early-user launch:
 - [x] Add real LangChain SDK integration test.
 - [x] Add real CrewAI SDK integration test.
 - [x] Add Groq live SDK integration harness.
+- [x] Verify Groq live function-calling test.
+- [x] Add real-world 8-stage capacity test.
 - [x] Add manual real SDK GitHub workflow.
 
 After public launch:
