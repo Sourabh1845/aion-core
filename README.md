@@ -104,6 +104,24 @@ Additional verified workflows:
 - Hardcore single-agent customer support workflow: `9/9 passed`, `6` hash-verified receipts, `1` pending approval.
 - Hardcore multi-agent incident response workflow: `10/10 passed`, `7` hash-verified receipts, `1` pending approval.
 
+## AION LaunchShield
+
+LaunchShield is a browser-based audit studio for AI agents and AI-built apps.
+Paste an agent prompt, tool list, MCP config, or launch notes to generate a risk
+score, AION stage coverage, simulated receipts, and a downloadable report.
+
+Public app:
+
+```text
+https://sourabh1845.github.io/aion-core/launchshield.html
+```
+
+Revenue path:
+
+- free launch scan for distribution
+- $29 launch report
+- $299+ human audit for serious teams
+
 ## Run Guard
 
 Check a generic action:
@@ -204,6 +222,7 @@ Useful docs:
 - [Real agent test plan](docs/REAL_AGENT_TESTS.md)
 - [Real SDK integrations](docs/REAL_SDK_INTEGRATIONS.md)
 - [Real-world capacity test](docs/REAL_WORLD_CAPACITY_TEST.md)
+- [AION LaunchShield](docs/LAUNCHSHIELD.md)
 - [Team policy and approvals](docs/TEAM_POLICY_APPROVALS.md)
 - [Stage 5 Cloud alignment](docs/STAGE5_CLOUD_ALIGNMENT.md)
 - [AION Cloud control panel](docs/STAGE8_CONTROL_PANEL.md)
