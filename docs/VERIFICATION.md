@@ -10,7 +10,12 @@ python -m unittest discover -s tests
 Result:
 
 ```text
-Ran 20 tests
+Base environment:
+Ran 22 tests
+OK (skipped=2)
+
+Real SDK venv:
+Ran 22 tests
 OK
 ```
 
@@ -63,6 +68,30 @@ Result:
 AION Core Agent Workflow Proof Pack
 Scenarios: 6/6 passed
 Receipts: 5 hash-verified
+```
+
+Real SDK integrations:
+
+```powershell
+$env:PYTHONPATH='src;examples\real_integrations'
+test-output\real-sdk-venv\Scripts\python.exe examples\real_integrations\run_real_sdk_tests.py --output-dir test-output\real-sdk-final
+```
+
+Result:
+
+```text
+AION + LangChain real SDK test
+Scenarios: 2/2 passed
+Receipts: 2 hash-verified
+
+AION + CrewAI real SDK test
+Scenarios: 2/2 passed
+Receipts: 2 hash-verified
+
+AION + Groq live SDK test
+SKIPPED: GROQ_API_KEY is not set
+
+Real SDK summary: 2 passed, 1 skipped, 0 failed
 ```
 
 Receipt verification:

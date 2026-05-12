@@ -1,7 +1,7 @@
 # Real Agent Test Plan
 
-AION Core now includes deterministic agent-workflow proof tests. The next layer
-is optional SDK-level testing against real agent packages and hosted model APIs.
+AION Core now includes deterministic agent-workflow proof tests plus real SDK
+integration tests against installed agent packages.
 
 ## Current Public Tests
 
@@ -21,10 +21,15 @@ Covered today:
 - team approval-required decisions
 - hash-verified receipts
 
-## Optional Real SDK Tests
+## Real SDK Tests
 
-These should be added as separate tests because they require extra dependencies
-or API keys.
+See [Real SDK Integrations](REAL_SDK_INTEGRATIONS.md).
+
+Verified locally:
+
+- LangChain `1.2.18`: passed
+- CrewAI `1.14.4`: passed
+- Groq `1.2.0`: harness ready, live API requires `GROQ_API_KEY`
 
 ### LangChain
 
@@ -34,11 +39,10 @@ Goal:
 - block destructive shell-style tool calls
 - allow safe read-only tools
 
-Suggested command:
+Command:
 
 ```powershell
-pip install langchain
-python examples\proof_pack\optional_langchain_test.py
+python examples\real_integrations\langchain_real_test.py
 ```
 
 ### CrewAI
@@ -49,11 +53,10 @@ Goal:
 - require approval for production mutations
 - store receipts
 
-Suggested command:
+Command:
 
 ```powershell
-pip install crewai
-python examples\proof_pack\optional_crewai_test.py
+python examples\real_integrations\crewai_real_test.py
 ```
 
 ### Groq
@@ -64,26 +67,26 @@ Goal:
 - block exfiltration-shaped tool arguments
 - allow safe function calls
 
-Suggested command:
+Command:
 
 ```powershell
-pip install groq
 $env:GROQ_API_KEY='...'
-python examples\proof_pack\optional_groq_test.py
+python examples\real_integrations\groq_live_test.py --require-api-key
 ```
 
 ## Public Claim Language
 
-Use this wording until SDK-level tests are added:
+Use this wording now:
 
 ```text
-AION Core includes deterministic proof tests that model LangChain-style,
-CrewAI-style, Groq-style, and raw MCP agent workflows.
+AION Core includes deterministic proof tests plus real SDK integration tests for
+LangChain and CrewAI. A Groq live tool-calling harness is included and requires a
+GROQ_API_KEY to execute.
 ```
 
-Use this wording only after real SDK tests are implemented:
+Use this wording only after the Groq live command passes with a real key:
 
 ```text
-AION Core has been tested with LangChain, CrewAI, Groq function calls, and raw
-MCP workflows.
+AION Core has been tested with LangChain, CrewAI, Groq live function calls, and
+raw MCP workflows.
 ```

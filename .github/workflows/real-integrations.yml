@@ -1,0 +1,29 @@
+name: Real SDK Integrations
+
+on:
+  workflow_dispatch:
+
+jobs:
+  real-integrations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install real SDK dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e . langchain crewai groq
+      - name: Run LangChain and CrewAI integration tests
+        run: |
+          PYTHONPATH="src:examples/real_integrations" python examples/real_integrations/run_real_sdk_tests.py --output-dir test-output/real-sdk
+      - name: Run Groq live integration when secret exists
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          if [ -n "$GROQ_API_KEY" ]; then
+            PYTHONPATH="src:examples/real_integrations" python examples/real_integrations/groq_live_test.py --require-api-key --output-dir test-output/real-sdk/groq-live
+          else
+            echo "GROQ_API_KEY is not set; skipping live Groq integration."
+          fi

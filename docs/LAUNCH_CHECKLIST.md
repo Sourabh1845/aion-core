@@ -56,6 +56,10 @@ Before GitHub/early-user launch:
 - [x] Publish first release tag.
 - [x] Add deterministic AION Proof Pack.
 - [x] Add Proof Pack to CI.
+- [x] Add real LangChain SDK integration test.
+- [x] Add real CrewAI SDK integration test.
+- [x] Add Groq live SDK integration harness.
+- [x] Add manual real SDK GitHub workflow.
 
 After public launch:
 

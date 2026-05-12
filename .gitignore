@@ -10,3 +10,4 @@ dist/
 receipts/
 test-output/
 .tmp-tests/
+real-test-output/

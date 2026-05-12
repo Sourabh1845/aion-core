@@ -74,6 +74,12 @@ Scenarios: 6/6 passed
 Receipts: 5 hash-verified
 ```
 
+Real SDK integration tests are also included:
+
+- LangChain `1.2.18`: real `StructuredTool` guard test passed.
+- CrewAI `1.14.4`: real `Agent`, `Task`, and `BaseTool` guard test passed.
+- Groq `1.2.0`: live tool-calling harness included; requires `GROQ_API_KEY`.
+
 ## Run Guard
 
 Check a generic action:
@@ -172,6 +178,7 @@ Useful docs:
 - [AION Scan](docs/SCAN.md)
 - [AION Proof Pack](docs/PROOF_PACK.md)
 - [Real agent test plan](docs/REAL_AGENT_TESTS.md)
+- [Real SDK integrations](docs/REAL_SDK_INTEGRATIONS.md)
 - [Team policy and approvals](docs/TEAM_POLICY_APPROVALS.md)
 - [Stage 5 Cloud alignment](docs/STAGE5_CLOUD_ALIGNMENT.md)
 - [AION Cloud control panel](docs/STAGE8_CONTROL_PANEL.md)
