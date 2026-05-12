@@ -1,12 +1,12 @@
 const stages = [
-  ["AION Guard", "Runtime action control"],
-  ["AION Receipts", "Decision evidence"],
-  ["AION Scan", "Risk discovery"],
-  ["Docs + Demo", "Launch report"],
-  ["AION Cloud", "Receipt bundle"],
-  ["MCP Firewall", "Tool-call firewall"],
-  ["Team Policy", "Approval rules"],
-  ["Control Panel", "Operator summary"],
+  ["Runtime Guard", "Risky action blocking"],
+  ["Evidence Log", "Decision evidence"],
+  ["Config Scan", "Risk discovery"],
+  ["Launch Report", "Exportable summary"],
+  ["Cloud-ready Export", "Report bundle"],
+  ["Tool-call Firewall", "MCP/API control"],
+  ["Approvals", "Human review points"],
+  ["Operator View", "Team summary"],
 ];
 
 const rulebook = [
@@ -14,17 +14,17 @@ const rulebook = [
     id: "destructive-shell",
     severity: "critical",
     weight: 22,
-    stage: "AION Guard",
+    stage: "Runtime Guard",
     title: "Destructive shell or system command surface",
     pattern: /\b(rm\s+-rf|del\s+\/s|Remove-Item|format\s|shutdown|sudo\s|chmod\s+777|curl\s+.*\|\s*(bash|sh)|powershell\s+-enc)\b/i,
-    fix: "Put shell/system tools behind AION Guard, block destructive commands by default, and require explicit approval for production mutations.",
+    fix: "Put shell/system tools behind a runtime guard, block destructive commands by default, and require explicit approval for production mutations.",
     block: true,
   },
   {
     id: "secret-exfiltration",
     severity: "critical",
     weight: 24,
-    stage: "AION Guard",
+    stage: "Runtime Guard",
     title: "Secret or credential exfiltration risk",
     pattern: /\b(api[_-]?key|secret|token|credential|password|\.env|ssh key|private key|send.*env|print.*env|exfiltrat)\b/i,
     fix: "Isolate secrets, redact tool arguments, and block requests that expose environment variables, API keys, or private credentials.",
@@ -34,17 +34,17 @@ const rulebook = [
     id: "mcp-unguarded",
     severity: "high",
     weight: 16,
-    stage: "MCP Firewall",
+    stage: "Tool-call Firewall",
     title: "MCP/tool server appears exposed without a firewall",
     pattern: /\b(mcp|tools\/call|stdio server|tool server|filesystem server|browser server)\b/i,
-    fix: "Run the MCP server behind AION MCP Firewall and log every allow/block decision.",
+    fix: "Run the MCP server behind a tool-call firewall and log every allow/block decision.",
     block: true,
   },
   {
     id: "database-write",
     severity: "high",
     weight: 14,
-    stage: "Team Policy",
+    stage: "Approvals",
     title: "Database write or account mutation needs approval",
     pattern: /\b(delete user|delete account|drop table|database write|db write|update customer|refund|charge|payment|invoice|subscription|production deploy|prod deploy)\b/i,
     fix: "Require human approval for account, payment, database, and production mutations.",
@@ -54,17 +54,17 @@ const rulebook = [
     id: "pii-handling",
     severity: "high",
     weight: 12,
-    stage: "AION Receipts",
+    stage: "Evidence Log",
     title: "Sensitive user data or PII is in scope",
     pattern: /\b(email address|phone number|address|ssn|aadhaar|pan card|medical|health|patient|financial|bank|credit card|customer data|crm)\b/i,
-    fix: "Log receipts without leaking raw PII, minimize tool permissions, and add data-retention limits.",
+    fix: "Log decision evidence without leaking raw PII, minimize tool permissions, and add data-retention limits.",
     block: false,
   },
   {
     id: "browser-automation",
     severity: "medium",
     weight: 9,
-    stage: "AION Guard",
+    stage: "Runtime Guard",
     title: "Browser automation can cross trust boundaries",
     pattern: /\b(browser|playwright|selenium|scrape|crawl|web automation|login page|cookie|session)\b/i,
     fix: "Constrain browser automation to approved domains and block credential/session extraction.",
@@ -74,7 +74,7 @@ const rulebook = [
     id: "email-slack-send",
     severity: "medium",
     weight: 8,
-    stage: "Team Policy",
+    stage: "Approvals",
     title: "Outbound message tool can create business risk",
     pattern: /\b(send email|email sender|slack send|post to slack|discord|webhook|sms|whatsapp)\b/i,
     fix: "Require approval or rate limits for outbound customer/team messages.",
@@ -84,17 +84,17 @@ const rulebook = [
     id: "file-system",
     severity: "medium",
     weight: 8,
-    stage: "MCP Firewall",
+    stage: "Tool-call Firewall",
     title: "File-system access should be least-privilege",
     pattern: /\b(file system|filesystem|read file|write file|download file|upload file|local files|documents folder)\b/i,
-    fix: "Restrict paths, block destructive file writes, and record receipts for file reads/writes.",
+    fix: "Restrict paths, block destructive file writes, and record evidence for file reads/writes.",
     block: false,
   },
   {
     id: "no-auth",
     severity: "high",
     weight: 13,
-    stage: "AION Scan",
+    stage: "Config Scan",
     title: "Auth or ownership model is unclear",
     pattern: /\b(no auth|public endpoint|open endpoint|without auth|anonymous|any user|shared token)\b/i,
     fix: "Add owner identity, per-agent permissions, and separate user/team scopes before launch.",
@@ -104,21 +104,21 @@ const rulebook = [
     id: "prompt-injection",
     severity: "high",
     weight: 15,
-    stage: "AION Guard",
+    stage: "Runtime Guard",
     title: "Prompt-injection exposure through untrusted content",
     pattern: /\b(user uploaded|webpage content|external content|email content|pdf|untrusted|ignore previous instructions|prompt injection)\b/i,
-    fix: "Treat external content as untrusted, restrict tool use after retrieval, and require receipts for high-risk actions.",
+    fix: "Treat external content as untrusted, restrict tool use after retrieval, and require evidence logs for high-risk actions.",
     block: true,
   },
 ];
 
 const controlPenalties = [
-  ["humanApproval", "high", 12, "Team Policy", "Human approval is missing for sensitive actions", "Add approval-required policies for production, payment, account, and outbound communication actions."],
-  ["receipts", "medium", 10, "AION Receipts", "Audit receipts are missing", "Record tamper-evident receipts for every tool-call allow/block/approval decision."],
-  ["leastPrivilege", "medium", 8, "Agent Identity", "Least-privilege boundaries are not declared", "Declare agent identity, owner, scope, allowed tools, and denied tools."],
-  ["secretIsolation", "high", 12, "AION Guard", "Secret isolation is not declared", "Keep API keys out of prompts/tool outputs and block exfiltration patterns."],
-  ["sandbox", "medium", 7, "MCP Firewall", "Sandboxing is not declared", "Run risky tools in a constrained environment and limit filesystem/network access."],
-  ["rateLimits", "low", 4, "Control Panel", "Rate limits are not declared", "Add limits and operator visibility for repeated risky actions."],
+  ["humanApproval", "high", 12, "Approvals", "Human approval is missing for sensitive actions", "Add approval-required policies for production, payment, account, and outbound communication actions."],
+  ["receipts", "medium", 10, "Evidence Log", "Audit evidence is missing", "Record tamper-evident evidence for every tool-call allow/block/approval decision."],
+  ["leastPrivilege", "medium", 8, "Runtime Guard", "Least-privilege boundaries are not declared", "Declare agent identity, owner, scope, allowed tools, and denied tools."],
+  ["secretIsolation", "high", 12, "Runtime Guard", "Secret isolation is not declared", "Keep API keys out of prompts/tool outputs and block exfiltration patterns."],
+  ["sandbox", "medium", 7, "Tool-call Firewall", "Sandboxing is not declared", "Run risky tools in a constrained environment and limit filesystem/network access."],
+  ["rateLimits", "low", 4, "Operator View", "Rate limits are not declared", "Add limits and operator visibility for repeated risky actions."],
 ];
 
 const samples = {
@@ -192,8 +192,8 @@ async function hashText(text) {
 
 async function receiptFor(index, finding, projectName) {
   const payload = {
-    schema: "aion.launchshield.receipt.v1",
-    receipt_id: `ls_${Date.now().toString(36)}_${index}`,
+    schema: "aion.launchshield.evidence.v1",
+    evidence_id: `ls_${Date.now().toString(36)}_${index}`,
     project: projectName,
     decision: finding.block ? "block_simulated" : finding.severity === "high" ? "approval_recommended" : "monitor",
     rule_id: finding.id,
@@ -218,7 +218,7 @@ async function analyze(form) {
       id: "need-real-input",
       severity: "medium",
       weight: 0,
-      stage: "Docs + Demo",
+      stage: "Launch Report",
       title: "Paste a real workflow or load a sample first",
       fix: "Add the agent prompt, tools/APIs, MCP config, auth model, and launch notes. The scanner needs that context before it can produce a useful score.",
       block: false,
@@ -263,9 +263,9 @@ async function analyze(form) {
       id: "mcp-declared",
       severity: "medium",
       weight: 7,
-      stage: "MCP Firewall",
+      stage: "Tool-call Firewall",
       title: "MCP surface declared",
-      fix: "Keep MCP calls behind AION Firewall and export receipts for customer evidence.",
+      fix: "Keep MCP calls behind a tool-call firewall and export evidence for customer review.",
       block: false,
     });
   }
@@ -275,7 +275,7 @@ async function analyze(form) {
       id: "thin-input",
       severity: "medium",
       weight: 10,
-      stage: "Docs + Demo",
+      stage: "Launch Report",
       title: "Input is too thin for a confident launch audit",
       fix: "Paste the real agent prompt, tool list, MCP config, auth model, and deployment notes.",
       block: false,
@@ -306,10 +306,10 @@ async function analyze(form) {
 }
 
 function stageActive(report, stageName) {
-  if (["AION Receipts", "Docs + Demo", "AION Cloud", "Control Panel"].includes(stageName)) return true;
+  if (["Evidence Log", "Launch Report", "Cloud-ready Export", "Operator View"].includes(stageName)) return true;
   return report.findings.some((finding) => finding.stage === stageName)
-    || (stageName === "Team Policy" && !report.controls.includes("humanApproval"))
-    || (stageName === "MCP Firewall" && report.surfaces.includes("MCP"));
+    || (stageName === "Approvals" && !report.controls.includes("humanApproval"))
+    || (stageName === "Tool-call Firewall" && report.surfaces.includes("MCP"));
 }
 
 function escapeHtml(value) {
@@ -353,13 +353,13 @@ function renderReport(report) {
 
   document.getElementById("receipts").textContent = report.receipts.length
     ? report.receipts.map((receipt) => JSON.stringify(receipt)).join("\n")
-    : "No receipts yet. Add a real workflow or load a sample, then run the scan.";
+    : "No evidence yet. Add a real workflow or load a sample, then run the scan.";
   document.getElementById("exportReport").disabled = report.grade === "input";
   document.getElementById("exportReportTop").disabled = report.grade === "input";
   document.getElementById("copyBrief").disabled = report.grade === "input";
 
-  const body = encodeURIComponent(`Project: ${report.projectName}\nScore: ${report.score}\nFindings: ${report.findings.length}\n\nI want a paid AION LaunchShield audit for this AI workflow.`);
-  document.getElementById("auditRequest").href = `https://github.com/Sourabh1845/aion-core/issues/new?title=AION%20LaunchShield%20audit%20request:%20${encodeURIComponent(report.projectName)}&body=${body}`;
+  const body = encodeURIComponent(`Project: ${report.projectName}\nScore: ${report.score}\nFindings: ${report.findings.length}\n\nFeedback:\n- What felt useful?\n- What felt confusing?\n- What should LaunchShield scan next?`);
+  document.getElementById("auditRequest").href = `https://github.com/Sourabh1845/aion-core/issues/new?title=AION%20LaunchShield%20feedback:%20${encodeURIComponent(report.projectName)}&body=${body}`;
 }
 
 async function copyAuditBrief() {
@@ -374,7 +374,7 @@ Findings: ${latestReport.findings.length}
 Top findings:
 ${latestReport.findings.slice(0, 5).map((finding, index) => `${index + 1}. [${finding.severity.toUpperCase()}] ${finding.title}`).join("\n")}
 
-I want a manual AION audit for this AI workflow.`;
+I want feedback or a manual review for this AI workflow.`;
   await navigator.clipboard.writeText(brief);
   const button = document.getElementById("copyBrief");
   const oldText = button.textContent;
@@ -399,19 +399,19 @@ ${report.findings.map((finding, index) => `${index + 1}. [${finding.severity.toU
    - AION stage: ${finding.stage}
    - Fix: ${finding.fix}`).join("\n\n")}
 
-## AION 8-Stage Coverage
+## Security Checks Covered
 
 ${stages.map(([name, description], index) => `${index + 1}. ${name}: ${description}`).join("\n")}
 
-## Receipts
+## Evidence Log
 
 \`\`\`jsonl
 ${report.receipts.map((receipt) => JSON.stringify(receipt)).join("\n")}
 \`\`\`
 
-## Paid Audit Path
+## Next Step
 
-Recommended next step: human review for policy design, exact tool-call blocks, receipts, and launch-ready remediation.
+Recommended next step: share this report with the AION team or request a manual review once the workflow is ready.
 `;
 }
 

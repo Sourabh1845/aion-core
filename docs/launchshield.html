@@ -231,12 +231,13 @@
 
     <section class="hero">
       <div class="panel">
-        <p class="pill">AI agent and AI-built app risk audit</p>
-        <h1>Scan an agent workflow before it reaches users.</h1>
+        <p class="pill">Free AI launch risk scanner</p>
+        <h1>Find obvious agent risks before launch.</h1>
         <p>
-          Paste a real workflow, or load a sample first. LaunchShield scores
-          the agent/app surface, simulates AION controls, and exports an audit
-          report you can send to a team or customer.
+          Paste a real workflow, or load a sample first. LaunchShield flags
+          dangerous tools, weak auth, missing approvals, secret exposure, and
+          risky data access. This first version is a local heuristic scanner,
+          not a full penetration test.
         </p>
         <div class="actions">
           <button id="loadAgentSample" class="button secondary" type="button">Load Agent Sample</button>
@@ -249,7 +250,7 @@
           <div id="score" class="score">--</div>
           <div id="grade" class="grade">Awaiting input</div>
         </div>
-        <p id="summary" class="muted">Run a scan to generate risk findings, stage coverage, and receipts.</p>
+        <p id="summary" class="muted">Run a scan to generate risk findings, covered checks, and an evidence log.</p>
         <div class="actions">
           <button id="exportReportTop" class="button primary" type="button" disabled>Export Report</button>
         </div>
@@ -297,7 +298,7 @@
         <label>Controls already present</label>
         <div class="checks" id="controlChecks">
           <label class="check"><input type="checkbox" value="humanApproval"> Human approval</label>
-          <label class="check"><input type="checkbox" value="receipts"> Audit logs/receipts</label>
+          <label class="check"><input type="checkbox" value="receipts"> Audit logs/evidence</label>
           <label class="check"><input type="checkbox" value="leastPrivilege"> Least privilege</label>
           <label class="check"><input type="checkbox" value="secretIsolation"> Secret isolation</label>
           <label class="check"><input type="checkbox" value="sandbox"> Sandbox</label>
@@ -315,7 +316,7 @@
         <div class="result-grid">
           <div class="metric"><strong id="findingCount">0</strong><span>Findings</span></div>
           <div class="metric"><strong id="blockCount">0</strong><span>Blocked simulations</span></div>
-          <div class="metric"><strong id="receiptCount">0</strong><span>Receipts</span></div>
+          <div class="metric"><strong id="receiptCount">0</strong><span>Evidence entries</span></div>
         </div>
 
         <h3>Priority Findings</h3>
@@ -323,43 +324,43 @@
           <div class="finding muted">No scan yet.</div>
         </div>
 
-        <h3 style="margin-top:18px;">AION 8-Stage Coverage</h3>
+        <h3 style="margin-top:18px;">Security Checks Covered</h3>
         <div id="stages" class="stages"></div>
 
-        <h3 style="margin-top:18px;">Receipts</h3>
-        <div id="receipts" class="receipts">No receipts yet.</div>
+        <h3 style="margin-top:18px;">Evidence Log</h3>
+        <div id="receipts" class="receipts">No evidence yet.</div>
 
         <div class="actions">
           <button id="exportReport" class="button primary" type="button" disabled>Export Markdown Report</button>
           <button id="copyBrief" class="button secondary" type="button" disabled>Copy Audit Brief</button>
-          <a id="auditRequest" class="button secondary" href="https://github.com/Sourabh1845/aion-core/issues/new?title=AION%20LaunchShield%20manual%20audit%20request" target="_blank" rel="noopener">Manual Audit Request</a>
+          <a id="auditRequest" class="button secondary" href="https://github.com/Sourabh1845/aion-core/issues/new?title=AION%20LaunchShield%20feedback" target="_blank" rel="noopener">Share Feedback</a>
         </div>
       </section>
     </section>
 
     <section class="panel" style="margin-top:18px;">
-      <h2>Pricing Path</h2>
+      <h2>Pilot Path</h2>
       <div class="pricing">
         <div class="price">
-          <span class="muted">Free</span>
-          <strong>$0</strong>
-          <p>Instant browser scan, top findings, risk score, and AION stage coverage.</p>
+          <span class="muted">Now</span>
+          <strong>Free scan</strong>
+          <p>Use the scanner, export the report, and share feedback on what felt useful or wrong.</p>
         </div>
         <div class="price">
-          <span class="muted">Launch Report</span>
-          <strong>$29</strong>
-          <p>Full generated report review, fix checklist, and founder-ready launch risk summary.</p>
+          <span class="muted">Next</span>
+          <strong>Founder feedback</strong>
+          <p>First real users help shape the rules, examples, and report format before paid plans.</p>
         </div>
         <div class="price">
-          <span class="muted">Human Audit</span>
-          <strong>$299+</strong>
-          <p>Manual review of an AI agent/app workflow with AION receipts and remediation plan.</p>
+          <span class="muted">After proof</span>
+          <strong>Manual review</strong>
+          <p>Paid reviews open after real scans, case studies, and a clearer delivery workflow.</p>
         </div>
       </div>
     </section>
 
     <footer>
-      AION LaunchShield is powered by AION Core 0.8.1 proof tests: LangChain, CrewAI, Groq, MCP, single-agent, and multi-agent workflows.
+      AION LaunchShield is an early scanner built on AION Core 0.8.1 proof work. It is useful for first-pass launch review, not a replacement for a full security assessment.
     </footer>
   </main>
 

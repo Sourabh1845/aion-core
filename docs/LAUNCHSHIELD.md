@@ -1,13 +1,13 @@
 # AION LaunchShield
 
-AION LaunchShield is a browser-based risk audit studio for AI agents and
+AION LaunchShield is a browser-based first-pass risk scanner for AI agents and
 AI-built apps.
 
-It is designed as AION's first revenue surface:
+It is designed as AION's first distribution and feedback surface:
 
 - free browser scan for distribution
-- paid launch report for indie builders
-- human audit for teams and founders
+- report export for feedback loops
+- manual review path after real usage and case studies
 
 ## What It Scans
 
@@ -24,17 +24,17 @@ LaunchShield returns:
 - launch risk score
 - priority findings
 - simulated AION allow/block/approval decisions
-- AION 8-stage coverage
-- hash-style browser receipts
+- covered security checks
+- hash-style browser evidence log
 - downloadable Markdown audit report
 
-## Pricing Path
+## Pilot Path
 
-| Tier | Price | Purpose |
-|---|---:|---|
-| Free scan | $0 | Top findings, score, and stage coverage. |
-| Launch report | $29 | Full report review and launch fix checklist. |
-| Human audit | $299+ | Manual AION review and remediation plan. |
+| Step | Purpose |
+|---|---|
+| Free scan | Top findings, score, covered checks, and exportable report. |
+| Founder feedback | Collect real examples, false positives, and report improvements. |
+| Manual review | Open paid reviews after case studies and a clear delivery workflow. |
 
 ## Public URL
 
@@ -49,8 +49,8 @@ https://sourabh1845.github.io/aion-core/launchshield.html
 LaunchShield keeps monetization aligned with AION Core:
 
 ```text
-Free scan -> report request -> paid audit -> real workflow feedback -> AION Cloud features
+Free scan -> feedback -> real workflow proof -> paid review -> AION Cloud features
 ```
 
 This avoids splitting focus into an unrelated consumer product while still
-creating a direct path to revenue.
+creating a direct path to trust and later revenue.

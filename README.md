@@ -106,9 +106,9 @@ Additional verified workflows:
 
 ## AION LaunchShield
 
-LaunchShield is a browser-based audit studio for AI agents and AI-built apps.
+LaunchShield is a browser-based first-pass scanner for AI agents and AI-built apps.
 Paste an agent prompt, tool list, MCP config, or launch notes to generate a risk
-score, AION stage coverage, simulated receipts, and a downloadable report.
+score, covered security checks, an evidence log, and a downloadable report.
 
 Public app:
 
@@ -116,11 +116,11 @@ Public app:
 https://sourabh1845.github.io/aion-core/launchshield.html
 ```
 
-Revenue path:
+Pilot path:
 
 - free launch scan for distribution
-- $29 launch report
-- $299+ human audit for serious teams
+- feedback from real builders
+- paid manual reviews after case studies and a clearer delivery workflow
 
 ## Run Guard
 
