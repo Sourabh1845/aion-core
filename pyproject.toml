@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aion-core"
-version = "0.8.1"
+version = "0.8.2"
 description = "AION Core runtime security layer for AI agent tool-call control, receipts, scanning, and approvals."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -31,6 +31,7 @@ aion-receipts = "aion_core.receipt_cli:main"
 aion-guard = "aion_core.guard_cli:main"
 aion-scan = "aion_core.scan_cli:main"
 aion-team = "aion_core.team_cli:main"
+aion-launchshield = "aion_core.launchshield:main"
 
 [project.urls]
 Homepage = "https://sourabh1845.github.io/aion-core/"

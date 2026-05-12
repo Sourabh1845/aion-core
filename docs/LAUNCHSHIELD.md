@@ -60,6 +60,26 @@ GitHub Pages:
 https://sourabh1845.github.io/aion-core/launchshield.html
 ```
 
+## Local CLI
+
+After installing AION Core `0.8.2` or running from the repository:
+
+```powershell
+aion-launchshield --project-name "My Agent" --workflow-file workflow.txt --tools-file tools.txt --mcp-config-file mcp.json --surface MCP --control receipts --output launchshield-report.md
+```
+
+JSON output:
+
+```powershell
+aion-launchshield --workflow-file workflow.txt --tools-file tools.txt --mcp-config-file mcp.json --surface MCP --json
+```
+
+Fail CI when launch blockers are found:
+
+```powershell
+aion-launchshield --workflow-file workflow.txt --tools-file tools.txt --mcp-config-file mcp.json --surface MCP --fail-on-blocker
+```
+
 ## Revenue Logic
 
 LaunchShield keeps monetization aligned with AION Core:

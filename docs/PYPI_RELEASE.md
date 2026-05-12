@@ -1,6 +1,6 @@
 # PyPI Release Checklist
 
-Package target: `aion-core==0.8.1`
+Package target: `aion-core==0.8.2`
 
 ## Preflight
 
@@ -14,8 +14,8 @@ python -m aion_core.demo
 Expected:
 
 ```text
-Ran 19 tests
-OK
+Ran 29 tests
+OK (skipped=2)
 Receipt verification: PASS (6 receipt(s), hash-verified)
 ```
 
@@ -58,7 +58,7 @@ To use it:
 
 1. Create a PyPI API token.
 2. Add it as GitHub repository secret `PYPI_API_TOKEN`.
-3. Publish GitHub release `v0.8.1`.
+3. Publish GitHub release `v0.8.2`.
 4. The workflow builds and uploads `aion-core` to PyPI.
 
 ## After Publish
@@ -70,6 +70,7 @@ aion-receipts --help
 aion-guard --help
 aion-scan --help
 aion-team --help
+aion-launchshield --help
 aion-mcp-firewall --help
 ```
 

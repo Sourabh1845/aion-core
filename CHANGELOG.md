@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.8.2
+
+LaunchShield CLI release.
+
+- Added `aion-launchshield` CLI for local AI agent/app launch-risk scans.
+- Added Python LaunchShield scanner engine with MCP config parsing.
+- Added risky tool-combination detection and launch blockers.
+- Added JSON and Markdown report export.
+- Added unit tests for MCP shell/filesystem risk, thin input, invalid MCP JSON, and CLI output.
+
 ## 0.8.1
 
 Proof and launch hardening release.

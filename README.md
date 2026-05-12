@@ -117,6 +117,18 @@ Public app:
 https://sourabh1845.github.io/aion-core/launchshield.html
 ```
 
+Local CLI:
+
+```powershell
+aion-launchshield --project-name "My Agent" --workflow-file workflow.txt --tools-file tools.txt --mcp-config-file mcp.json --surface MCP --control receipts --output launchshield-report.md
+```
+
+JSON output:
+
+```powershell
+aion-launchshield --workflow-file workflow.txt --tools-file tools.txt --mcp-config-file mcp.json --surface MCP --json
+```
+
 Pilot path:
 
 - free launch scan for distribution

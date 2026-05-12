@@ -11,7 +11,7 @@ Result:
 
 ```text
 Base environment:
-Ran 25 tests
+Ran 29 tests
 OK (skipped=2)
 
 Real SDK venv:
@@ -153,6 +153,23 @@ Result:
 OK: verified 6 receipt(s)
 ```
 
+LaunchShield CLI:
+
+```powershell
+$env:PYTHONPATH='src'
+python -m aion_core.launchshield --project-name 'CLI Markdown Smoke' --workflow 'Agent reads customer data from uploaded PDFs and external email content, then can trigger refunds and send email summaries.' --tools 'MCP filesystem server, shell, payment refund API, email sender, API_KEY in env.' --mcp-config-file test-output\launchshield-cli-smoke\mcp.json --surface MCP --surface OpenAI --control receipts --output test-output\launchshield-cli-smoke\report.md
+```
+
+Result:
+
+```text
+AION LaunchShield Report generated.
+Score: 0/100
+Status: critical
+Scanner confidence: High
+Risk chains: 4
+```
+
 Scan:
 
 ```powershell
@@ -169,9 +186,22 @@ HIGH unprotected-mcp-server
 Packaging:
 
 ```powershell
-python -m pip install -e .
+python -m build
+python -m twine check dist\*
 ```
 
-Editable install successfully built and installed `aion-core` in the existing user venv.
+Result:
 
-Note: the Codex sandbox could not execute that venv's Python launcher because access to its base Python path was denied from the sandbox. Source-run commands using `PYTHONPATH=src` are fully verified.
+```text
+Successfully built aion_core-0.8.2.tar.gz and aion_core-0.8.2-py3-none-any.whl
+Checking dist\aion_core-0.8.2-py3-none-any.whl: PASSED
+Checking dist\aion_core-0.8.2.tar.gz: PASSED
+```
+
+Installed wheel smoke:
+
+```text
+Successfully installed aion-core-0.8.2
+0.8.2
+aion-launchshield generated a Markdown report with critical launch blockers.
+```

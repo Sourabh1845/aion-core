@@ -16,4 +16,4 @@ __all__ = [
     "evaluate_team_action",
 ]
 
-__version__ = "0.8.1"
+__version__ = "0.8.2"
