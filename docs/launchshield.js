@@ -165,6 +165,13 @@ function combinedInput(form) {
   ].join("\n");
 }
 
+function meaningfulInputLength(form) {
+  return [form.workflow.value, form.tools.value, form.mcpConfig.value]
+    .join("\n")
+    .trim()
+    .length;
+}
+
 function severityRank(severity) {
   return { critical: 4, high: 3, medium: 2, low: 1 }[severity] || 0;
 }
@@ -204,6 +211,30 @@ async function analyze(form) {
   const controls = checkedValues("controlChecks");
   const surfaces = checkedValues("surfaceChecks");
   const findings = [];
+  const inputLength = meaningfulInputLength(form);
+
+  if (inputLength < 40) {
+    const finding = {
+      id: "need-real-input",
+      severity: "medium",
+      weight: 0,
+      stage: "Docs + Demo",
+      title: "Paste a real workflow or load a sample first",
+      fix: "Add the agent prompt, tools/APIs, MCP config, auth model, and launch notes. The scanner needs that context before it can produce a useful score.",
+      block: false,
+    };
+    return {
+      projectName: form.projectName.value.trim() || "Untitled AI workflow",
+      launchStage: form.launchStage.value,
+      surfaces,
+      controls,
+      score: "--",
+      grade: "input",
+      findings: [finding],
+      receipts: [],
+      generatedAt: new Date().toISOString(),
+    };
+  }
 
   for (const rule of rulebook) {
     if (rule.pattern.test(text)) {
@@ -239,7 +270,7 @@ async function analyze(form) {
     });
   }
 
-  if (!text.trim() || text.trim().length < 80) {
+  if (inputLength < 160) {
     findings.push({
       id: "thin-input",
       severity: "medium",
@@ -295,11 +326,13 @@ function renderReport(report) {
   document.getElementById("score").textContent = report.score;
   const grade = document.getElementById("grade");
   grade.className = `grade ${report.grade}`;
-  grade.textContent = report.grade === "ready" ? "Launch Ready With Controls" : report.grade === "caution" ? "Needs Hardening" : "High Risk";
+  grade.textContent = report.grade === "input" ? "Needs Real Input" : report.grade === "ready" ? "Launch Ready With Controls" : report.grade === "caution" ? "Needs Hardening" : "High Risk";
 
   const criticals = report.findings.filter((finding) => finding.severity === "critical").length;
   const highs = report.findings.filter((finding) => finding.severity === "high").length;
-  document.getElementById("summary").textContent = `${report.projectName}: ${criticals} critical, ${highs} high, ${report.findings.length} total findings.`;
+  document.getElementById("summary").textContent = report.grade === "input"
+    ? "Load a sample or paste a real agent/app workflow to generate a useful audit."
+    : `${report.projectName}: ${criticals} critical, ${highs} high, ${report.findings.length} total findings.`;
   document.getElementById("findingCount").textContent = report.findings.length;
   document.getElementById("blockCount").textContent = report.findings.filter((finding) => finding.block).length;
   document.getElementById("receiptCount").textContent = report.receipts.length;
@@ -318,12 +351,37 @@ function renderReport(report) {
     </div>
   `).join("");
 
-  document.getElementById("receipts").textContent = report.receipts.map((receipt) => JSON.stringify(receipt)).join("\n");
-  document.getElementById("exportReport").disabled = false;
-  document.getElementById("exportReportTop").disabled = false;
+  document.getElementById("receipts").textContent = report.receipts.length
+    ? report.receipts.map((receipt) => JSON.stringify(receipt)).join("\n")
+    : "No receipts yet. Add a real workflow or load a sample, then run the scan.";
+  document.getElementById("exportReport").disabled = report.grade === "input";
+  document.getElementById("exportReportTop").disabled = report.grade === "input";
+  document.getElementById("copyBrief").disabled = report.grade === "input";
 
   const body = encodeURIComponent(`Project: ${report.projectName}\nScore: ${report.score}\nFindings: ${report.findings.length}\n\nI want a paid AION LaunchShield audit for this AI workflow.`);
   document.getElementById("auditRequest").href = `https://github.com/Sourabh1845/aion-core/issues/new?title=AION%20LaunchShield%20audit%20request:%20${encodeURIComponent(report.projectName)}&body=${body}`;
+}
+
+async function copyAuditBrief() {
+  if (!latestReport || latestReport.grade === "input") return;
+  const brief = `AION LaunchShield audit request
+
+Project: ${latestReport.projectName}
+Score: ${latestReport.score}/100
+Status: ${latestReport.grade}
+Findings: ${latestReport.findings.length}
+
+Top findings:
+${latestReport.findings.slice(0, 5).map((finding, index) => `${index + 1}. [${finding.severity.toUpperCase()}] ${finding.title}`).join("\n")}
+
+I want a manual AION audit for this AI workflow.`;
+  await navigator.clipboard.writeText(brief);
+  const button = document.getElementById("copyBrief");
+  const oldText = button.textContent;
+  button.textContent = "Copied";
+  setTimeout(() => {
+    button.textContent = oldText;
+  }, 1400);
 }
 
 function reportMarkdown(report) {
@@ -399,6 +457,7 @@ document.getElementById("loadAgentSample").addEventListener("click", () => loadS
 document.getElementById("loadAppSample").addEventListener("click", () => loadSample(samples.app));
 document.getElementById("exportReport").addEventListener("click", downloadReport);
 document.getElementById("exportReportTop").addEventListener("click", downloadReport);
+document.getElementById("copyBrief").addEventListener("click", copyAuditBrief);
 
 document.getElementById("stages").innerHTML = stages.map(([name, description], index) => `
   <div class="stage">

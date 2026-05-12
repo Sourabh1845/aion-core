@@ -89,6 +89,7 @@
     .grade.critical { color: var(--bad); border-color: rgba(255,107,107,.45); }
     .grade.caution { color: var(--warn); border-color: rgba(255,209,102,.45); }
     .grade.ready { color: var(--ok); border-color: rgba(126,231,135,.45); }
+    .grade.input { color: var(--accent-2); border-color: rgba(139,211,255,.45); }
     .app {
       display: grid;
       grid-template-columns: minmax(360px, .95fr) minmax(0, 1.05fr);
@@ -233,8 +234,8 @@
         <p class="pill">AI agent and AI-built app risk audit</p>
         <h1>Scan an agent workflow before it reaches users.</h1>
         <p>
-          Paste the prompt, tools, MCP config, or launch notes. LaunchShield
-          scores the workflow, simulates AION controls, and exports an audit
+          Paste a real workflow, or load a sample first. LaunchShield scores
+          the agent/app surface, simulates AION controls, and exports an audit
           report you can send to a team or customer.
         </p>
         <div class="actions">
@@ -330,7 +331,8 @@
 
         <div class="actions">
           <button id="exportReport" class="button primary" type="button" disabled>Export Markdown Report</button>
-          <a id="auditRequest" class="button secondary" href="https://github.com/Sourabh1845/aion-core/issues/new?title=AION%20LaunchShield%20audit%20request" target="_blank" rel="noopener">Request Paid Audit</a>
+          <button id="copyBrief" class="button secondary" type="button" disabled>Copy Audit Brief</button>
+          <a id="auditRequest" class="button secondary" href="https://github.com/Sourabh1845/aion-core/issues/new?title=AION%20LaunchShield%20manual%20audit%20request" target="_blank" rel="noopener">Manual Audit Request</a>
         </div>
       </section>
     </section>
