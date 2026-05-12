@@ -50,6 +50,7 @@ Before GitHub/early-user launch:
 - [x] Push source to GitHub.
 - [x] Enable GitHub Pages from `/docs`.
 - [x] Publish `aion-core==0.8.0` to PyPI.
+- [ ] Publish `aion-core==0.8.1` proof-hardened release to PyPI.
 - [ ] Add first 20 target users for outreach.
 - [ ] Record and upload 60-90 second demo video.
 - [ ] Add screenshot/video link to README.
@@ -61,6 +62,8 @@ Before GitHub/early-user launch:
 - [x] Add Groq live SDK integration harness.
 - [x] Verify Groq live function-calling test.
 - [x] Add real-world 8-stage capacity test.
+- [x] Add hardcore single-agent capacity test.
+- [x] Add hardcore multi-agent capacity test.
 - [x] Add manual real SDK GitHub workflow.
 
 After public launch:

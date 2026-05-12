@@ -52,14 +52,14 @@ This proves the infrastructure wedge:
 - generic Guard actions can be allowed or blocked
 - dangerous shell action is blocked before reaching the tool
 - secret exfiltration attempt is blocked before reaching the tool
-- safe file-read style action is allowed
+- safe file-read action is allowed
 - approval-required team actions create approval records
 - every decision gets a receipt
 
 ## Proof Pack
 
 AION Core includes deterministic agent-workflow proof tests that model
-LangChain-style, CrewAI-style, Groq-style, and raw MCP workflows.
+LangChain, CrewAI, Groq function-calling, and raw MCP workflows.
 
 ```powershell
 $env:PYTHONPATH='src'
@@ -80,10 +80,10 @@ Real SDK integration tests are also included:
 - CrewAI `1.14.4`: real `Agent`, `Task`, and `BaseTool` guard test passed.
 - Groq `1.2.0`: real live function-calling test passed with `llama-3.1-8b-instant`.
 
-## Real-World Capacity Test
+## Real-World Capacity Tests
 
-AION Core includes an end-to-end release-ops capacity test that exercises all 8
-MVP layers together.
+AION Core includes end-to-end real-world capacity tests that exercise all 8 MVP
+layers together.
 
 ```powershell
 $env:PYTHONPATH='src'
@@ -98,6 +98,11 @@ Scenarios: 8/8 passed
 Receipts: 5 hash-verified
 Pending approvals: 1
 ```
+
+Additional verified workflows:
+
+- Hardcore single-agent customer support workflow: `9/9 passed`, `6` hash-verified receipts, `1` pending approval.
+- Hardcore multi-agent incident response workflow: `10/10 passed`, `7` hash-verified receipts, `1` pending approval.
 
 ## Run Guard
 

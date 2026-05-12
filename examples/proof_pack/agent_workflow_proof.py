@@ -1,8 +1,8 @@
-"""Run AION Core proof scenarios against agent-style tool workflows.
+"""Run AION Core proof scenarios against agent tool workflows.
 
 The scenarios are deterministic and do not call external APIs. They model the
-tool-call shapes used by LangChain-style tools, CrewAI-style tasks, Groq
-function-calling agents, and raw MCP configurations.
+tool-call shapes used by LangChain tools, CrewAI tasks, Groq function-calling
+agents, and raw MCP configurations.
 """
 
 from __future__ import annotations
@@ -90,7 +90,7 @@ class GuardScenario:
 
 GUARD_SCENARIOS = [
     GuardScenario(
-        framework="LangChain-style tool agent",
+        framework="LangChain tool workflow",
         name="blocks destructive shell tool call",
         action_type="shell.command",
         tool="shell",
@@ -99,7 +99,7 @@ GUARD_SCENARIOS = [
         risk="destructive_command",
     ),
     GuardScenario(
-        framework="LangChain-style tool agent",
+        framework="LangChain tool workflow",
         name="allows safe file-read tool call",
         action_type="file.read",
         tool="read_file",
@@ -108,7 +108,7 @@ GUARD_SCENARIOS = [
         risk="safe_read",
     ),
     GuardScenario(
-        framework="CrewAI-style research agent",
+        framework="CrewAI research workflow",
         name="blocks secret exfiltration through HTTP tool",
         action_type="http.request",
         tool="http_post",
@@ -117,7 +117,7 @@ GUARD_SCENARIOS = [
         risk="secret_exfiltration",
     ),
     GuardScenario(
-        framework="Groq function-calling agent",
+        framework="Groq function-calling workflow",
         name="allows safe summarization function call",
         action_type="llm.function_call",
         tool="summarize_ticket",
@@ -193,11 +193,11 @@ def main(argv: list[str] | None = None) -> int:
             action_type="cloud.delete",
             tool="aws",
             arguments={"environment": "production", "command": "delete service billing-api"},
-            agent_id="crewai-style-ops-agent",
+            agent_id="crewai-ops-agent",
             owner="proof-team",
             team_id="proof-team",
             request_id="team-proof-1",
-            metadata={"framework": "CrewAI-style operations agent", "risk": "production_mutation"},
+            metadata={"framework": "CrewAI operations workflow", "risk": "production_mutation"},
         ),
         policy=team_policy,
         receipt_sink=receipt_sink,
@@ -207,7 +207,7 @@ def main(argv: list[str] | None = None) -> int:
     failures += 0 if team_passed else 1
     results.append(
         {
-            "framework": "CrewAI-style operations agent",
+            "framework": "CrewAI operations workflow",
             "scenario": "requires approval for production delete task",
             "expected": "approval_required",
             "actual": team_result.decision.decision,

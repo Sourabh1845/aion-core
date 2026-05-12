@@ -3,7 +3,7 @@
 ## Public Launch Post
 
 ```text
-I launched AION Core 0.8.0 today.
+I launched AION Core 0.8.1 today.
 
 AION Core is an open-source runtime security layer for AI agents:
 - MCP tool-call firewall
@@ -11,6 +11,8 @@ AION Core is an open-source runtime security layer for AI agents:
 - Scan for weak MCP configs/policies
 - hash-verified receipts
 - team approval-required decisions
+- real LangChain, CrewAI, and Groq live tests
+- single-agent and multi-agent real-world capacity tests
 
 Install:
 pip install aion-core

@@ -1,8 +1,8 @@
-# Real-World Capacity Test
+# Real-World Capacity Tests
 
-This test verifies AION Core against a realistic release-ops agent workflow.
+AION Core includes three real-world capacity tests.
 
-Scenario:
+## 1. Release Ops Agent
 
 ```text
 An AI release-ops agent is preparing a production release.
@@ -28,18 +28,75 @@ Receipts: 5 hash-verified
 Pending approvals: 1
 ```
 
+## 2. Hardcore Single-Agent Support Workflow
+
+Scenario:
+
+```text
+A customer support AI agent has access to ticket lookup, CRM export, HTTP, MCP,
+and account admin tools. AION must allow safe lookups, block sensitive export
+and secret exfiltration, require approval for account deletion, verify receipts,
+and produce cloud/control-panel evidence.
+```
+
+Run:
+
+```powershell
+$env:PYTHONPATH='src'
+python examples\real_world_capacity\support_agent_capacity_test.py --output-dir test-output\single-agent-final
+```
+
+Verified result:
+
+```text
+AION Hardcore Single-Agent Capacity Test
+Workflow: customer support sensitive data resolution
+Scenarios: 9/9 passed
+Receipts: 6 hash-verified
+Pending approvals: 1
+```
+
+## 3. Hardcore Multi-Agent Incident Response
+
+Scenario:
+
+```text
+A planner agent, research agent, coding agent, and ops agent collaborate on a
+production incident workflow. AION must apply per-agent controls, block risky
+actions, require approval for production changes, verify receipts, and produce a
+team-level control-panel summary.
+```
+
+Run:
+
+```powershell
+$env:PYTHONPATH='src'
+python examples\real_world_capacity\multi_agent_capacity_test.py --output-dir test-output\multi-agent-final
+```
+
+Verified result:
+
+```text
+AION Hardcore Multi-Agent Capacity Test
+Workflow: multi-agent incident response
+Agents: planner-agent, research-agent, coding-agent, ops-agent
+Scenarios: 10/10 passed
+Receipts: 7 hash-verified
+Pending approvals: 1
+```
+
 ## Stages Covered
 
-| AION layer | What the test proves |
+| AION layer | What these tests prove |
 |---|---|
-| AION Guard | Safe release read is allowed; destructive shell cleanup is blocked. |
+| AION Guard | Safe actions are allowed; destructive and exfiltration actions are blocked. |
 | AION Receipts | Runtime decisions produce hash-verified `aion.receipt.v1` receipts. |
-| AION Scan | Weak/unprotected release MCP config is detected before workflow use. |
-| Docs + Demo | A machine-readable capacity report is generated. |
+| AION Scan | Weak/unprotected MCP configs are detected before workflow use. |
+| Docs + Demo | Machine-readable capacity reports are generated. |
 | AION Cloud alignment | A Cloud-compatible receipt upload bundle is produced. |
-| MCP Firewall | Safe MCP read is allowed; destructive MCP shell call is blocked. |
-| Team Policy | Production deployment mutation requires approval. |
-| Control Panel | Operator summary shows blocks and pending approval. |
+| MCP Firewall | Safe MCP calls are allowed; risky MCP calls are blocked. |
+| Team Policy | Sensitive production/account actions require approval. |
+| Control Panel | Operator summaries show blocks, per-agent risk, and pending approvals. |
 
 ## Artifacts
 

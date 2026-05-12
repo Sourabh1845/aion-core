@@ -4,7 +4,7 @@ I am launching AION Core, an open-source runtime security layer for AI agents.
 
 As agents start using MCP servers and tools that can touch files, shells, APIs, and internal systems, teams need a control layer between the agent and the action.
 
-AION Core `0.8.0` is the first infrastructure MVP:
+AION Core `0.8.1` is the proof-hardened infrastructure MVP:
 
 - guards generic agent actions
 - scans MCP configs and policies for weak coverage
@@ -14,6 +14,8 @@ AION Core `0.8.0` is the first infrastructure MVP:
 - writes hash-verified JSONL audit receipts
 - creates approval-required team policy decisions
 - connects receipts to an AION Cloud control panel MVP
+- includes real LangChain, CrewAI, and Groq live tests
+- includes single-agent and multi-agent real-world capacity tests
 
 Demo:
 

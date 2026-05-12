@@ -14,9 +14,9 @@ python examples\proof_pack\agent_workflow_proof.py
 
 Covered today:
 
-- LangChain-style tool calls
-- CrewAI-style research and operations tasks
-- Groq-style function calls
+- LangChain tool calls
+- CrewAI research and operations tasks
+- Groq function calls
 - raw MCP config scanning
 - team approval-required decisions
 - hash-verified receipts
@@ -36,7 +36,7 @@ Verified locally:
 Goal:
 
 - wrap AION Guard around a LangChain tool invocation
-- block destructive shell-style tool calls
+- block destructive shell tool calls
 - allow safe read-only tools
 
 Command:

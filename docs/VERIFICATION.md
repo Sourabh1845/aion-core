@@ -11,11 +11,11 @@ Result:
 
 ```text
 Base environment:
-Ran 23 tests
+Ran 25 tests
 OK (skipped=2)
 
 Real SDK venv:
-Ran 22 tests
+Ran 25 tests
 OK
 ```
 
@@ -124,6 +124,19 @@ AION Real-World Capacity Test
 Workflow: release ops agent production readiness
 Scenarios: 8/8 passed
 Receipts: 5 hash-verified
+Pending approvals: 1
+
+AION Hardcore Single-Agent Capacity Test
+Workflow: customer support sensitive data resolution
+Scenarios: 9/9 passed
+Receipts: 6 hash-verified
+Pending approvals: 1
+
+AION Hardcore Multi-Agent Capacity Test
+Workflow: multi-agent incident response
+Agents: planner-agent, research-agent, coding-agent, ops-agent
+Scenarios: 10/10 passed
+Receipts: 7 hash-verified
 Pending approvals: 1
 ```
 

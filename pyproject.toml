@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aion-core"
-version = "0.8.0"
+version = "0.8.1"
 description = "AION Core runtime security layer for AI agent tool-call control, receipts, scanning, and approvals."
 readme = "README.md"
 requires-python = ">=3.10"

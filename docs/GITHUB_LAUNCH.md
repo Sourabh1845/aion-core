@@ -9,10 +9,10 @@ cd C:\Users\SOURABH RANJAN\aion-core
 git init
 git branch -M main
 git add .
-git commit -m "Launch AION Core 0.8.0"
+git commit -m "Launch AION Core 0.8.1"
 git remote add origin https://github.com/Sourabh1845/aion-core.git
 git push -u origin main
-git push origin v0.8.0
+git push origin v0.8.1
 ```
 
 ## GitHub Settings
@@ -31,8 +31,8 @@ git push origin v0.8.0
   - Branch: `main`
   - Folder: `/docs`
 - Create release:
-  - Tag: `v0.8.0`
-  - Title: `AION Core 0.8.0`
+  - Tag: `v0.8.1`
+  - Title: `AION Core 0.8.1`
 - Add repository secret for PyPI publishing:
   - Name: `PYPI_API_TOKEN`
   - Value: your PyPI project/account API token
@@ -40,7 +40,7 @@ git push origin v0.8.0
 ## Release Notes
 
 ```text
-AION Core 0.8.0 is the first public infrastructure MVP.
+AION Core 0.8.1 is the proof-hardened public infrastructure MVP.
 
 Includes:
 - AION Guard runtime action checks
@@ -50,6 +50,8 @@ Includes:
 - Team policy approval-required decisions
 - AION Cloud receipt/control-panel alignment
 - One-command demo: aion-demo
+- Real LangChain, CrewAI, and Groq live tests
+- Single-agent and multi-agent real-world capacity tests
 ```
 
 ## Smoke Test After Push

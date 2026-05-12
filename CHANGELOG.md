@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.8.1
+
+Proof and launch hardening release.
+
+- Added real LangChain SDK integration test.
+- Added real CrewAI SDK integration test.
+- Added Groq live function-calling verification.
+- Added release-ops real-world 8-stage capacity test.
+- Added hardcore single-agent customer support capacity test.
+- Added hardcore multi-agent incident response capacity test.
+- Updated website/docs to use real test claims instead of framework-style claims.
+
 ## 0.8.0
 
 Initial AION Core infra MVP through Stage 8.

@@ -36,11 +36,11 @@ proof-output/approvals.jsonl
 
 | Agent workflow | Scenario | Expected |
 |---|---|---|
-| LangChain-style tool agent | destructive shell command | blocked |
-| LangChain-style tool agent | safe file read | allowed |
-| CrewAI-style research agent | secret exfiltration through HTTP tool | blocked |
-| CrewAI-style operations agent | production delete task | approval required |
-| Groq function-calling agent | safe summarization function call | allowed |
+| LangChain tool workflow | destructive shell command | blocked |
+| LangChain tool workflow | safe file read | allowed |
+| CrewAI research workflow | secret exfiltration through HTTP tool | blocked |
+| CrewAI operations workflow | production delete task | approval required |
+| Groq function-calling workflow | safe summarization function call | allowed |
 | Raw MCP configuration | unprotected filesystem server | high scan finding |
 
 ## What This Proves
