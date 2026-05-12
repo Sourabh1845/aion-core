@@ -108,7 +108,8 @@ Additional verified workflows:
 
 LaunchShield is a browser-based first-pass scanner for AI agents and AI-built apps.
 Paste an agent prompt, tool list, MCP config, or launch notes to generate a risk
-score, covered security checks, an evidence log, and a downloadable report.
+score, risky-chain detection, launch blockers, covered security checks, an
+evidence log, and a downloadable report.
 
 Public app:
 

@@ -23,10 +23,26 @@ LaunchShield returns:
 
 - launch risk score
 - priority findings
+- launch blockers
+- risky tool-combination chains
+- parsed MCP server signals when valid JSON is provided
+- scanner confidence
 - simulated AION allow/block/approval decisions
 - covered security checks
 - hash-style browser evidence log
 - downloadable Markdown audit report
+
+## Current Engine
+
+The public scanner is still local and heuristic, but it now does more than a
+flat keyword checklist:
+
+- parses `mcpServers` JSON when pasted
+- detects shell-capable MCP servers
+- detects broad filesystem roots
+- detects secret-looking MCP environment keys
+- detects chains such as secrets + outbound tools, untrusted content + database
+  writes, public endpoints + sensitive data, and MCP + shell/filesystem access
 
 ## Pilot Path
 

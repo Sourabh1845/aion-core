@@ -129,7 +129,7 @@ Receipt verification: PASS</pre>
     </section>
 
     <section class="grid">
-      <div class="card"><strong>LaunchShield</strong>Paste an AI agent, MCP config, or AI-built app workflow and get a first-pass risk score, findings, evidence log, and exportable report.</div>
+      <div class="card"><strong>LaunchShield</strong>Paste an AI agent, MCP config, or AI-built app workflow and get a first-pass risk score, risky-chain detection, evidence log, and exportable report.</div>
       <div class="card"><strong>MCP Firewall</strong>Intercepts `tools/call` over stdio and blocks risky calls before they hit tools.</div>
       <div class="card"><strong>Verified Receipts</strong>Writes JSONL audit logs with stable receipt IDs and SHA-256 verification.</div>
     </section>
@@ -138,8 +138,9 @@ Receipt verification: PASS</pre>
       <h2>AION LaunchShield</h2>
       <p>
         LaunchShield is a browser-based first-pass scanner for AI agents and
-        AI-built apps. It flags obvious launch risks such as dangerous tools,
-        weak auth, secret exposure, missing approvals, and sensitive data access
+        AI-built apps. It parses MCP-style JSON when provided, flags obvious
+        launch risks such as dangerous tools, weak auth, secret exposure,
+        missing approvals, sensitive data access, and risky tool combinations
         before the workflow touches production users.
       </p>
       <div class="actions">

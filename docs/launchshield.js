@@ -121,6 +121,91 @@ const controlPenalties = [
   ["rateLimits", "low", 4, "Operator View", "Rate limits are not declared", "Add limits and operator visibility for repeated risky actions."],
 ];
 
+const toolSignals = [
+  ["shell", "Shell/system command", /\b(shell|powershell|cmd\.exe|bash|sh\s+-c|terminal|run command|system command|exec)\b/i, true],
+  ["filesystem", "File-system access", /\b(file system|filesystem|read file|write file|download file|upload file|local files|documents folder|--root)\b/i, true],
+  ["browser", "Browser/web automation", /\b(browser|playwright|selenium|scrape|crawl|web automation|webpage|website login)\b/i, false],
+  ["outbound", "Outbound messaging", /\b(send email|email sender|slack send|post to slack|discord|webhook|sms|whatsapp|notify customer)\b/i, true],
+  ["databaseWrite", "Database write", /\b(database write|db write|update customer|drop table|delete row|write to database|admin update)\b/i, true],
+  ["payment", "Payment/refund action", /\b(refund|charge|payment|stripe|invoice|subscription|billing)\b/i, true],
+  ["sensitiveData", "Sensitive/customer data", /\b(customer data|crm|email address|phone number|address|ssn|aadhaar|pan card|medical|health|patient|financial|bank|credit card|ticket data)\b/i, true],
+  ["secrets", "Secrets/credentials", /\b(api[_-]?key|secret|token|credential|password|\.env|private key|ssh key)\b/i, true],
+  ["publicEndpoint", "Public or weak auth endpoint", /\b(no auth|public endpoint|open endpoint|without auth|anonymous|any user|shared token|preview route)\b/i, true],
+  ["untrustedContent", "Untrusted content input", /\b(user uploaded|webpage content|external content|email content|pdf|untrusted|ignore previous instructions|prompt injection)\b/i, false],
+  ["production", "Production environment", /\b(production|prod deploy|production deploy|live users|customer-facing|enterprise customer)\b/i, true],
+  ["adminMutation", "Account/admin mutation", /\b(delete user|delete account|disable account|change role|admin action|account removal)\b/i, true],
+];
+
+const comboRules = [
+  {
+    id: "secret-outbound-chain",
+    severity: "critical",
+    weight: 20,
+    stage: "Runtime Guard",
+    title: "Secret exfiltration path: credentials plus outbound/browser tools",
+    needs: ["secrets"],
+    any: ["outbound", "browser", "webhook"],
+    fix: "Remove secrets from agent-visible context and block any tool call that sends credentials to email, webhook, browser, or chat tools.",
+    block: true,
+  },
+  {
+    id: "prompt-injection-action-chain",
+    severity: "critical",
+    weight: 18,
+    stage: "Runtime Guard",
+    title: "Prompt-injection-to-action chain",
+    needs: ["untrustedContent"],
+    any: ["databaseWrite", "payment", "adminMutation", "outbound"],
+    fix: "Do not let content from PDFs, webpages, or emails directly trigger database, payment, account, or outbound-message actions.",
+    block: true,
+  },
+  {
+    id: "public-data-write-chain",
+    severity: "high",
+    weight: 16,
+    stage: "Config Scan",
+    title: "Public/weak auth surface touches sensitive data or writes",
+    needs: ["publicEndpoint"],
+    any: ["databaseWrite", "payment", "sensitiveData", "adminMutation"],
+    fix: "Add real auth, owner scoping, and per-user/team permissions before exposing this workflow.",
+    block: false,
+  },
+  {
+    id: "mcp-shell-filesystem-chain",
+    severity: "high",
+    weight: 15,
+    stage: "Tool-call Firewall",
+    title: "MCP can reach shell or broad file-system tools",
+    needs: ["mcp"],
+    any: ["shell", "filesystem"],
+    fix: "Put MCP tools behind a firewall, restrict paths/commands, and sandbox the server before sharing it with agents.",
+    block: true,
+  },
+  {
+    id: "customer-data-outbound-chain",
+    severity: "high",
+    weight: 13,
+    stage: "Approvals",
+    title: "Customer data can flow into outbound communication",
+    needs: ["sensitiveData", "outbound"],
+    any: [],
+    fix: "Require human approval or strict templates before sending customer data through email, Slack, SMS, or webhooks.",
+    block: false,
+  },
+  {
+    id: "production-without-approval-chain",
+    severity: "high",
+    weight: 12,
+    stage: "Approvals",
+    title: "Production-impacting workflow without declared approval",
+    needs: ["production"],
+    missingControl: "humanApproval",
+    any: ["databaseWrite", "payment", "adminMutation", "shell"],
+    fix: "Declare human approval for production-impacting actions before launch.",
+    block: false,
+  },
+];
+
 const samples = {
   agent: {
     projectName: "SupportOps Agent",
@@ -172,6 +257,167 @@ function meaningfulInputLength(form) {
     .length;
 }
 
+function parseMcpConfig(rawConfig) {
+  const raw = rawConfig.trim();
+  const analysis = {
+    parsed: false,
+    parseError: false,
+    servers: [],
+    broadRoots: [],
+    shellServers: [],
+    secretEnvKeys: [],
+  };
+  if (!raw) return analysis;
+  if (!raw.startsWith("{") && !raw.startsWith("[")) return analysis;
+
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (_) {
+    analysis.parseError = true;
+    return analysis;
+  }
+
+  analysis.parsed = true;
+  const serverMap = parsed.mcpServers || parsed.servers || parsed.MCPServers || {};
+  if (!serverMap || typeof serverMap !== "object" || Array.isArray(serverMap)) return analysis;
+
+  for (const [name, server] of Object.entries(serverMap)) {
+    const command = String(server.command || server.cmd || "");
+    const args = Array.isArray(server.args) ? server.args.map(String) : [];
+    const env = server.env && typeof server.env === "object" ? server.env : {};
+    const envKeys = Object.keys(env);
+    const joinedArgs = args.join(" ");
+    const serverRecord = { name, command, args, envKeys };
+    analysis.servers.push(serverRecord);
+
+    if (/(powershell|cmd\.exe|bash|\/bin\/sh|\/bin\/bash|shell)/i.test(`${name} ${command} ${joinedArgs}`)) {
+      analysis.shellServers.push(serverRecord);
+    }
+    if (/(^|\s|=)(\/|~|[A-Za-z]:\\?|[A-Za-z]:\/?|C:\\Users|C:\/Users|\/Users|\/home)(\s|$|\\|\/)/i.test(joinedArgs)) {
+      analysis.broadRoots.push(serverRecord);
+    }
+    for (const key of envKeys) {
+      if (/(api|token|secret|password|credential|key)/i.test(key)) {
+        analysis.secretEnvKeys.push({ server: name, key });
+      }
+    }
+  }
+
+  return analysis;
+}
+
+function configFindings(mcpAnalysis, surfaces, rawConfig) {
+  const findings = [];
+  if (surfaces.includes("MCP") && !rawConfig.trim()) {
+    findings.push({
+      id: "mcp-config-missing",
+      severity: "medium",
+      weight: 8,
+      stage: "Config Scan",
+      title: "MCP selected but no config was provided",
+      fix: "Paste the MCP config so LaunchShield can inspect server commands, args, roots, and environment variables.",
+      block: false,
+    });
+  }
+  if (mcpAnalysis.parseError) {
+    findings.push({
+      id: "mcp-config-invalid-json",
+      severity: "medium",
+      weight: 8,
+      stage: "Config Scan",
+      title: "MCP/config JSON could not be parsed",
+      fix: "Fix the JSON format or paste the exact config file to enable deeper server analysis.",
+      block: false,
+    });
+  }
+  if (mcpAnalysis.shellServers.length) {
+    findings.push({
+      id: "mcp-shell-server",
+      severity: "critical",
+      weight: 20,
+      stage: "Tool-call Firewall",
+      title: "MCP config exposes shell/system command execution",
+      fix: `Review server(s): ${mcpAnalysis.shellServers.map((server) => server.name).join(", ")}. Put them behind a strict firewall or remove them from agent access.`,
+      block: true,
+    });
+  }
+  if (mcpAnalysis.broadRoots.length) {
+    findings.push({
+      id: "mcp-broad-filesystem-root",
+      severity: "high",
+      weight: 14,
+      stage: "Tool-call Firewall",
+      title: "MCP file-system root looks too broad",
+      fix: `Narrow root/path access for server(s): ${mcpAnalysis.broadRoots.map((server) => server.name).join(", ")}.`,
+      block: false,
+    });
+  }
+  if (mcpAnalysis.secretEnvKeys.length) {
+    findings.push({
+      id: "mcp-secret-env",
+      severity: "high",
+      weight: 14,
+      stage: "Runtime Guard",
+      title: "MCP server environment contains secret-looking keys",
+      fix: "Do not expose API keys, tokens, or credentials to agent-readable config or tool outputs.",
+      block: false,
+    });
+  }
+  return findings;
+}
+
+function detectSignals(text, surfaces, mcpAnalysis) {
+  const signalSet = new Set();
+  for (const [id, , pattern] of toolSignals) {
+    if (pattern.test(text)) signalSet.add(id);
+  }
+  if (surfaces.includes("MCP") || mcpAnalysis.servers.length) signalSet.add("mcp");
+  if (mcpAnalysis.shellServers.length) signalSet.add("shell");
+  if (mcpAnalysis.broadRoots.length) signalSet.add("filesystem");
+  if (mcpAnalysis.secretEnvKeys.length) signalSet.add("secrets");
+  if (/webhook/i.test(text)) signalSet.add("webhook");
+  return signalSet;
+}
+
+function comboFindings(signals, controls) {
+  return comboRules
+    .filter((rule) => {
+      const hasNeeds = rule.needs.every((need) => signals.has(need));
+      const hasAny = !rule.any.length || rule.any.some((signal) => signals.has(signal));
+      const missingControl = !rule.missingControl || !controls.includes(rule.missingControl);
+      return hasNeeds && hasAny && missingControl;
+    })
+    .map((rule) => ({ ...rule, combo: true }));
+}
+
+function detectedSurfaceLabels(signals, mcpAnalysis) {
+  const labels = toolSignals
+    .filter(([id]) => signals.has(id))
+    .map(([id, label, , hot]) => ({ id, label, hot }));
+  if (mcpAnalysis.servers.length) {
+    labels.push({
+      id: "mcpServers",
+      label: `${mcpAnalysis.servers.length} MCP server${mcpAnalysis.servers.length === 1 ? "" : "s"} parsed`,
+      hot: mcpAnalysis.shellServers.length > 0 || mcpAnalysis.broadRoots.length > 0,
+    });
+  }
+  return labels;
+}
+
+function confidenceLabel(form, mcpAnalysis, surfaces, controls) {
+  let points = 0;
+  if (form.workflow.value.trim().length > 80) points += 30;
+  if (form.tools.value.trim().length > 40) points += 25;
+  if (form.mcpConfig.value.trim().length > 20) points += 15;
+  if (mcpAnalysis.parsed) points += 15;
+  if (surfaces.length) points += 8;
+  if (controls.length) points += 7;
+  if (points >= 75) return "High";
+  if (points >= 45) return "Medium";
+  return "Low";
+}
+
 function severityRank(severity) {
   return { critical: 4, high: 3, medium: 2, low: 1 }[severity] || 0;
 }
@@ -212,6 +458,9 @@ async function analyze(form) {
   const surfaces = checkedValues("surfaceChecks");
   const findings = [];
   const inputLength = meaningfulInputLength(form);
+  const mcpAnalysis = parseMcpConfig(form.mcpConfig.value);
+  const signals = detectSignals(text, surfaces, mcpAnalysis);
+  const confidence = confidenceLabel(form, mcpAnalysis, surfaces, controls);
 
   if (inputLength < 40) {
     const finding = {
@@ -232,9 +481,16 @@ async function analyze(form) {
       grade: "input",
       findings: [finding],
       receipts: [],
+      blockers: [],
+      riskChainCount: 0,
+      detectedSurfaces: detectedSurfaceLabels(signals, mcpAnalysis),
+      confidence,
+      mcpAnalysis,
       generatedAt: new Date().toISOString(),
     };
   }
+
+  findings.push(...configFindings(mcpAnalysis, surfaces, form.mcpConfig.value));
 
   for (const rule of rulebook) {
     if (rule.pattern.test(text)) {
@@ -270,6 +526,8 @@ async function analyze(form) {
     });
   }
 
+  findings.push(...comboFindings(signals, controls));
+
   if (inputLength < 160) {
     findings.push({
       id: "thin-input",
@@ -287,6 +545,7 @@ async function analyze(form) {
   const penalty = uniqueFindings.reduce((total, finding) => total + finding.weight, 0);
   const score = Math.max(0, Math.min(100, 100 - penalty));
   const grade = score >= 82 ? "ready" : score >= 58 ? "caution" : "critical";
+  const blockers = uniqueFindings.filter((finding) => finding.block || finding.severity === "critical");
   const receipts = [];
   for (let i = 0; i < uniqueFindings.length; i += 1) {
     receipts.push(await receiptFor(i + 1, uniqueFindings[i], form.projectName.value.trim() || "Untitled AI workflow"));
@@ -301,6 +560,11 @@ async function analyze(form) {
     grade,
     findings: uniqueFindings,
     receipts,
+    blockers,
+    riskChainCount: uniqueFindings.filter((finding) => finding.combo).length,
+    detectedSurfaces: detectedSurfaceLabels(signals, mcpAnalysis),
+    confidence,
+    mcpAnalysis,
     generatedAt: new Date().toISOString(),
   };
 }
@@ -334,8 +598,22 @@ function renderReport(report) {
     ? "Load a sample or paste a real agent/app workflow to generate a useful audit."
     : `${report.projectName}: ${criticals} critical, ${highs} high, ${report.findings.length} total findings.`;
   document.getElementById("findingCount").textContent = report.findings.length;
-  document.getElementById("blockCount").textContent = report.findings.filter((finding) => finding.block).length;
+  document.getElementById("comboCount").textContent = report.riskChainCount;
   document.getElementById("receiptCount").textContent = report.receipts.length;
+  document.getElementById("confidence").textContent = report.confidence;
+
+  document.getElementById("detectedSurfaces").innerHTML = report.detectedSurfaces.length
+    ? report.detectedSurfaces.map((surface) => `<span class="chip ${surface.hot ? "hot" : ""}">${escapeHtml(surface.label)}</span>`).join("")
+    : `<span class="chip">No clear tool surface detected</span>`;
+
+  document.getElementById("launchBlockers").innerHTML = report.blockers.length
+    ? report.blockers.map((finding) => `
+      <div class="finding blocker">
+        <strong><span class="sev ${finding.severity}">${finding.severity}</span>${escapeHtml(finding.title)}</strong>
+        <div class="muted">${escapeHtml(finding.fix)}</div>
+      </div>
+    `).join("")
+    : `<div class="finding muted">No launch blockers detected from this input.</div>`;
 
   document.getElementById("findings").innerHTML = report.findings.map((finding) => `
     <div class="finding">
@@ -374,6 +652,9 @@ Findings: ${latestReport.findings.length}
 Top findings:
 ${latestReport.findings.slice(0, 5).map((finding, index) => `${index + 1}. [${finding.severity.toUpperCase()}] ${finding.title}`).join("\n")}
 
+Launch blockers:
+${latestReport.blockers.length ? latestReport.blockers.map((finding, index) => `${index + 1}. [${finding.severity.toUpperCase()}] ${finding.title}`).join("\n") : "None detected"}
+
 I want feedback or a manual review for this AI workflow.`;
   await navigator.clipboard.writeText(brief);
   const button = document.getElementById("copyBrief");
@@ -392,11 +673,23 @@ Generated: ${report.generatedAt}
 Launch stage: ${report.launchStage}
 Score: ${report.score}/100
 Status: ${report.grade}
+Scanner confidence: ${report.confidence}
+Risk chains: ${report.riskChainCount}
+
+## Detected Surfaces
+
+${report.detectedSurfaces.length ? report.detectedSurfaces.map((surface) => `- ${surface.label}`).join("\n") : "- No clear tool surface detected"}
+
+## Launch Blockers
+
+${report.blockers.length ? report.blockers.map((finding, index) => `${index + 1}. [${finding.severity.toUpperCase()}] ${finding.title}
+   - Check: ${finding.stage}
+   - Fix: ${finding.fix}`).join("\n\n") : "No launch blockers detected from this input."}
 
 ## Findings
 
 ${report.findings.map((finding, index) => `${index + 1}. [${finding.severity.toUpperCase()}] ${finding.title}
-   - AION stage: ${finding.stage}
+   - Check: ${finding.stage}
    - Fix: ${finding.fix}`).join("\n\n")}
 
 ## Security Checks Covered
