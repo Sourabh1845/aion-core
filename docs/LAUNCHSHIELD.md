@@ -3,11 +3,11 @@
 AION LaunchShield is a browser-based first-pass risk scanner for AI agents and
 AI-built apps.
 
-It is designed as AION's first distribution and feedback surface:
+It is designed as AION's first distribution and revenue surface:
 
 - free browser scan for distribution
 - report export for feedback loops
-- manual review path after real usage and case studies
+- manual launch fix plan request for early paid service
 
 ## What It Scans
 
@@ -45,25 +45,27 @@ flat keyword checklist:
 - detects chains such as secrets + outbound tools, untrusted content + database
   writes, public endpoints + sensitive data, and MCP + shell/filesystem access
 
-## Pilot Path
+## User Flow
 
 | Step | Purpose |
 |---|---|
-| Free scan | Top findings, score, covered checks, and exportable report. |
-| Founder feedback | Collect real examples, false positives, and report improvements. |
-| Manual review | Open paid reviews after case studies and a clear delivery workflow. |
+| Free scan | User pastes workflow, tools, MCP config, or launch notes. |
+| Export report | User gets blockers, risk chains, findings, evidence log, and fixes. |
+| Request fix plan | User emails or copies a review request with the scan summary attached. |
+| Manual delivery | AION replies with scope, payment link, and the fix-plan delivery timeline. |
 
 ## Revenue Path
 
-LaunchShield now includes a manual review request flow:
+LaunchShield includes a manual launch fix request flow:
 
-- Starter review: `$49`
-- Launch Fix Plan: `$199`
-- Team Review: `$499+`
+- Beta Review: `$29`
+- Launch Fix Plan: `$99`
+- Team Review: `$299+`
 
 The scanner creates an email-ready request with the score, launch blockers,
 risk chains, top findings, and user context. Payment is handled after scope
-confirmation until a formal checkout is added.
+confirmation until a formal checkout is added. Users are not paying for the
+free scanner alone; they pay for the human-reviewed launch verdict and fix plan.
 
 ## Public URL
 
@@ -71,6 +73,12 @@ GitHub Pages:
 
 ```text
 https://sourabh1845.github.io/aion-core/launchshield.html
+```
+
+Sample fix plan:
+
+```text
+https://sourabh1845.github.io/aion-core/launchshield-sample-report.html
 ```
 
 ## Local CLI
@@ -98,7 +106,7 @@ aion-launchshield --workflow-file workflow.txt --tools-file tools.txt --mcp-conf
 LaunchShield keeps monetization aligned with AION Core:
 
 ```text
-Free scan -> feedback -> real workflow proof -> paid review -> AION Cloud features
+Free scan -> report -> fix-plan request -> paid review -> AION Cloud features
 ```
 
 This avoids splitting focus into an unrelated consumer product while still

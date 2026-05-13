@@ -698,12 +698,13 @@ function reviewRequestText() {
       ];
 
   return [
-    "AION LaunchShield review request",
+    "AION LaunchShield launch fix request",
     "",
     `Name: ${name || "(not provided)"}`,
     `Email: ${email || "(not provided)"}`,
     `Review type: ${reviewPackage}`,
     `Timeline: ${timeline}`,
+    "Payment: after scope confirmation; no automatic checkout was used.",
     "",
     "Context:",
     notes || "(not provided)",
@@ -715,8 +716,8 @@ function reviewRequestText() {
 
 function updateReviewRequestLink() {
   const subject = latestReport && latestReport.grade !== "input"
-    ? `AION LaunchShield review: ${latestReport.projectName}`
-    : "AION LaunchShield review request";
+    ? `AION LaunchShield fix plan: ${latestReport.projectName}`
+    : "AION LaunchShield fix plan request";
   const body = reviewRequestText();
   document.getElementById("emailReviewRequest").href =
     `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -771,7 +772,7 @@ ${report.receipts.map((receipt) => JSON.stringify(receipt)).join("\n")}
 
 ## Next Step
 
-Recommended next step: share this report with the AION team or request a manual review once the workflow is ready.
+Recommended next step: fix any blockers first. If you want help, request a manual launch fix plan and attach this report.
 `;
 }
 

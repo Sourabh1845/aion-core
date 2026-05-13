@@ -269,6 +269,7 @@
         <div class="actions">
           <button id="loadAgentSample" class="button secondary" type="button">Load Agent Sample</button>
           <button id="loadAppSample" class="button secondary" type="button">Load AI App Sample</button>
+          <a class="button secondary" href="./launchshield-sample-report.html">View Sample Fix Plan</a>
         </div>
       </div>
       <aside class="panel summary-panel">
@@ -376,30 +377,51 @@
       </section>
     </section>
 
+    <section class="panel" style="margin-top:18px;">
+      <h2>How it works</h2>
+      <div class="pricing">
+        <div class="price">
+          <span class="muted">1. Free scan</span>
+          <strong>Paste workflow</strong>
+          <p>Run a browser-only scan for obvious agent, MCP, tool, secret, approval, and launch risks.</p>
+        </div>
+        <div class="price">
+          <span class="muted">2. Report</span>
+          <strong>Export evidence</strong>
+          <p>Download the Markdown report with blockers, risk chains, findings, and recommended fixes.</p>
+        </div>
+        <div class="price">
+          <span class="muted">3. Paid help</span>
+          <strong>Fix plan</strong>
+          <p>Request a manual review only if you want a launch-ready remediation plan before shipping.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="lead-box">
       <div class="panel">
-        <p class="pill">Revenue path</p>
-        <h2>Request a launch review</h2>
+        <p class="pill">Paid review beta</p>
+        <h2>Request a launch fix plan</h2>
         <p>
-          If the scan finds blockers, send the audit brief for a manual review.
-          The first paid offer is simple: identify what to block, what needs
-          approval, and what can ship safely.
+          The free scanner is not the paid product. The paid product is a
+          human-reviewed fix plan for founders and teams who are about to launch
+          an AI agent, MCP workflow, or AI-built app and want clear next actions.
         </p>
         <div class="pricing" style="grid-template-columns: 1fr; margin-top:12px;">
           <div class="price">
-            <span class="muted">Starter</span>
-            <strong>$49</strong>
-            <p>One workflow review with risk summary and top fixes.</p>
+            <span class="muted">Beta Review</span>
+            <strong>$29</strong>
+            <p>Top 5 launch risks, quick verdict, and 3 immediate fixes for one workflow.</p>
           </div>
           <div class="price">
             <span class="muted">Launch Fix Plan</span>
-            <strong>$199</strong>
-            <p>Detailed remediation plan for tools, MCP config, approvals, and launch blockers.</p>
+            <strong>$99</strong>
+            <p>Detailed remediation checklist for tools, MCP config, approvals, secrets, and launch blockers.</p>
           </div>
           <div class="price">
             <span class="muted">Team Review</span>
-            <strong>$499+</strong>
-            <p>Multi-agent or production workflow review with implementation guidance.</p>
+            <strong>$299+</strong>
+            <p>Multi-agent or production workflow review with implementation guidance and priority fixes.</p>
           </div>
         </div>
       </div>
@@ -420,9 +442,9 @@
           <div>
             <label for="reviewPackage">Review type</label>
             <select id="reviewPackage" name="reviewPackage">
-              <option value="Starter review ($49)">Starter review ($49)</option>
-              <option value="Launch Fix Plan ($199)">Launch Fix Plan ($199)</option>
-              <option value="Team Review ($499+)">Team Review ($499+)</option>
+              <option value="Beta Review ($29)">Beta Review ($29)</option>
+              <option value="Launch Fix Plan ($99)">Launch Fix Plan ($99)</option>
+              <option value="Team Review ($299+)">Team Review ($299+)</option>
             </select>
           </div>
           <div>
@@ -439,32 +461,33 @@
         <textarea id="reviewNotes" name="reviewNotes" placeholder="What are you launching? What tools does the agent/app use? What worries you most?"></textarea>
         <div class="notice">
           Your scan stays in the browser. Nothing is sent until you click an email/copy action.
-          Payment is handled after scope confirmation.
+          Payment is handled after scope confirmation; this beta does not use automatic checkout yet.
         </div>
         <div class="actions">
           <a id="emailReviewRequest" class="button primary" href="mailto:sourabhranjansahoo@gmail.com">Email Review Request</a>
           <button id="copyReviewRequest" class="button secondary" type="button">Copy Request</button>
+          <a class="button secondary" href="./launchshield-sample-report.html">Sample Fix Plan</a>
         </div>
       </form>
     </section>
 
     <section class="panel" style="margin-top:18px;">
-      <h2>Pilot Path</h2>
+      <h2>What the paid review delivers</h2>
       <div class="pricing">
         <div class="price">
-          <span class="muted">Now</span>
-          <strong>Free scan</strong>
-          <p>Use the scanner, export the report, and share feedback on what felt useful or wrong.</p>
+          <span class="muted">Verdict</span>
+          <strong>Ship / fix / block</strong>
+          <p>A clear launch decision for the current workflow with the highest-risk reasons listed first.</p>
         </div>
         <div class="price">
-          <span class="muted">Next</span>
-          <strong>Founder feedback</strong>
-          <p>First real users help shape the rules, examples, and report format before paid plans.</p>
+          <span class="muted">Fixes</span>
+          <strong>Action checklist</strong>
+          <p>Concrete approval, permission, secret-handling, tool-scope, and logging changes to make before launch.</p>
         </div>
         <div class="price">
-          <span class="muted">After proof</span>
-          <strong>Manual review</strong>
-          <p>Paid reviews open after real scans, case studies, and a clearer delivery workflow.</p>
+          <span class="muted">Proof</span>
+          <strong>Report summary</strong>
+          <p>A founder-ready summary you can share with a teammate, client, pilot customer, or investor.</p>
         </div>
       </div>
     </section>

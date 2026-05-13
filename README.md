@@ -129,11 +129,11 @@ JSON output:
 aion-launchshield --workflow-file workflow.txt --tools-file tools.txt --mcp-config-file mcp.json --surface MCP --json
 ```
 
-Pilot path:
+LaunchShield revenue path:
 
 - free launch scan for distribution
-- feedback from real builders
-- paid manual launch reviews through the LaunchShield request flow
+- exportable report with blockers, risk chains, and fixes
+- paid launch fix plan requests for builders who want manual review before shipping
 
 ## Run Guard
 
