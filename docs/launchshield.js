@@ -9,6 +9,8 @@ const stages = [
   ["Operator View", "Team summary"],
 ];
 
+const contactEmail = "sourabhranjansahoo@gmail.com";
+
 const rulebook = [
   {
     id: "destructive-shell",
@@ -638,6 +640,7 @@ function renderReport(report) {
 
   const body = encodeURIComponent(`Project: ${report.projectName}\nScore: ${report.score}\nFindings: ${report.findings.length}\n\nFeedback:\n- What felt useful?\n- What felt confusing?\n- What should LaunchShield scan next?`);
   document.getElementById("auditRequest").href = `https://github.com/Sourabh1845/aion-core/issues/new?title=AION%20LaunchShield%20feedback:%20${encodeURIComponent(report.projectName)}&body=${body}`;
+  updateReviewRequestLink();
 }
 
 async function copyAuditBrief() {
@@ -658,6 +661,70 @@ ${latestReport.blockers.length ? latestReport.blockers.map((finding, index) => `
 I want feedback or a manual review for this AI workflow.`;
   await navigator.clipboard.writeText(brief);
   const button = document.getElementById("copyBrief");
+  const oldText = button.textContent;
+  button.textContent = "Copied";
+  setTimeout(() => {
+    button.textContent = oldText;
+  }, 1400);
+}
+
+function reviewRequestText() {
+  const name = document.getElementById("leadName").value.trim();
+  const email = document.getElementById("leadEmail").value.trim();
+  const reviewPackage = document.getElementById("reviewPackage").value;
+  const timeline = document.getElementById("timeline").value;
+  const notes = document.getElementById("reviewNotes").value.trim();
+  const report = latestReport;
+  const reportLines = report && report.grade !== "input"
+    ? [
+        `Project: ${report.projectName}`,
+        `Score: ${report.score}/100`,
+        `Status: ${report.grade}`,
+        `Scanner confidence: ${report.confidence}`,
+        `Risk chains: ${report.riskChainCount}`,
+        `Findings: ${report.findings.length}`,
+        "",
+        "Launch blockers:",
+        report.blockers.length
+          ? report.blockers.map((finding, index) => `${index + 1}. [${finding.severity.toUpperCase()}] ${finding.title}`).join("\n")
+          : "None detected",
+        "",
+        "Top findings:",
+        report.findings.slice(0, 5).map((finding, index) => `${index + 1}. [${finding.severity.toUpperCase()}] ${finding.title}`).join("\n"),
+      ]
+    : [
+        "No completed scan attached yet.",
+        "Please run LaunchShield before review if possible.",
+      ];
+
+  return [
+    "AION LaunchShield review request",
+    "",
+    `Name: ${name || "(not provided)"}`,
+    `Email: ${email || "(not provided)"}`,
+    `Review type: ${reviewPackage}`,
+    `Timeline: ${timeline}`,
+    "",
+    "Context:",
+    notes || "(not provided)",
+    "",
+    "Scan summary:",
+    ...reportLines,
+  ].join("\n");
+}
+
+function updateReviewRequestLink() {
+  const subject = latestReport && latestReport.grade !== "input"
+    ? `AION LaunchShield review: ${latestReport.projectName}`
+    : "AION LaunchShield review request";
+  const body = reviewRequestText();
+  document.getElementById("emailReviewRequest").href =
+    `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+async function copyReviewRequest() {
+  await navigator.clipboard.writeText(reviewRequestText());
+  const button = document.getElementById("copyReviewRequest");
   const oldText = button.textContent;
   button.textContent = "Copied";
   setTimeout(() => {
@@ -751,6 +818,11 @@ document.getElementById("loadAppSample").addEventListener("click", () => loadSam
 document.getElementById("exportReport").addEventListener("click", downloadReport);
 document.getElementById("exportReportTop").addEventListener("click", downloadReport);
 document.getElementById("copyBrief").addEventListener("click", copyAuditBrief);
+document.getElementById("copyReviewRequest").addEventListener("click", copyReviewRequest);
+["leadName", "leadEmail", "reviewPackage", "timeline", "reviewNotes"].forEach((id) => {
+  document.getElementById(id).addEventListener("input", updateReviewRequestLink);
+  document.getElementById(id).addEventListener("change", updateReviewRequestLink);
+});
 
 document.getElementById("stages").innerHTML = stages.map(([name, description], index) => `
   <div class="stage">
@@ -758,3 +830,4 @@ document.getElementById("stages").innerHTML = stages.map(([name, description], i
     ${escapeHtml(description)}
   </div>
 `).join("");
+updateReviewRequestLink();

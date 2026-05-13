@@ -216,11 +216,26 @@
       min-height: 176px;
     }
     .price strong { display: block; font-size: 22px; margin: 6px 0; }
+    .lead-box {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(320px, 1.1fr);
+      gap: 18px;
+      align-items: start;
+      margin-top: 18px;
+    }
+    .notice {
+      border: 1px solid rgba(139,211,255,.3);
+      border-radius: 8px;
+      background: rgba(139,211,255,.08);
+      padding: 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
     .muted { color: var(--muted); }
     .hidden { display: none; }
     footer { margin-top: 36px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 20px; }
     @media (max-width: 980px) {
-      .hero, .app, .pricing { grid-template-columns: 1fr; }
+      .hero, .app, .pricing, .lead-box { grid-template-columns: 1fr; }
       .stages { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 640px) {
@@ -359,6 +374,78 @@
           <a id="auditRequest" class="button secondary" href="https://github.com/Sourabh1845/aion-core/issues/new?title=AION%20LaunchShield%20feedback" target="_blank" rel="noopener">Share Feedback</a>
         </div>
       </section>
+    </section>
+
+    <section class="lead-box">
+      <div class="panel">
+        <p class="pill">Revenue path</p>
+        <h2>Request a launch review</h2>
+        <p>
+          If the scan finds blockers, send the audit brief for a manual review.
+          The first paid offer is simple: identify what to block, what needs
+          approval, and what can ship safely.
+        </p>
+        <div class="pricing" style="grid-template-columns: 1fr; margin-top:12px;">
+          <div class="price">
+            <span class="muted">Starter</span>
+            <strong>$49</strong>
+            <p>One workflow review with risk summary and top fixes.</p>
+          </div>
+          <div class="price">
+            <span class="muted">Launch Fix Plan</span>
+            <strong>$199</strong>
+            <p>Detailed remediation plan for tools, MCP config, approvals, and launch blockers.</p>
+          </div>
+          <div class="price">
+            <span class="muted">Team Review</span>
+            <strong>$499+</strong>
+            <p>Multi-agent or production workflow review with implementation guidance.</p>
+          </div>
+        </div>
+      </div>
+
+      <form id="reviewForm" class="panel">
+        <h2>Review Request</h2>
+        <div class="two">
+          <div>
+            <label for="leadName">Name</label>
+            <input id="leadName" name="leadName" autocomplete="name" placeholder="Your name">
+          </div>
+          <div>
+            <label for="leadEmail">Email</label>
+            <input id="leadEmail" name="leadEmail" type="email" autocomplete="email" placeholder="you@example.com">
+          </div>
+        </div>
+        <div class="two">
+          <div>
+            <label for="reviewPackage">Review type</label>
+            <select id="reviewPackage" name="reviewPackage">
+              <option value="Starter review ($49)">Starter review ($49)</option>
+              <option value="Launch Fix Plan ($199)">Launch Fix Plan ($199)</option>
+              <option value="Team Review ($499+)">Team Review ($499+)</option>
+            </select>
+          </div>
+          <div>
+            <label for="timeline">Timeline</label>
+            <select id="timeline" name="timeline">
+              <option value="Today / urgent">Today / urgent</option>
+              <option value="This week">This week</option>
+              <option value="Before launch">Before launch</option>
+              <option value="Exploring">Exploring</option>
+            </select>
+          </div>
+        </div>
+        <label for="reviewNotes">Context</label>
+        <textarea id="reviewNotes" name="reviewNotes" placeholder="What are you launching? What tools does the agent/app use? What worries you most?"></textarea>
+        <div class="notice">
+          Your scan stays in the browser. Nothing is sent until you click an email/copy action.
+          Payment is handled after scope confirmation.
+        </div>
+        <div class="actions">
+          <a id="emailReviewRequest" class="button primary" href="mailto:sourabhranjansahoo@gmail.com">Email Review Request</a>
+          <button id="copyReviewRequest" class="button secondary" type="button">Copy Request</button>
+        </div>
+      </form>
     </section>
 
     <section class="panel" style="margin-top:18px;">

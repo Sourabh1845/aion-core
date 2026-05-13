@@ -31,6 +31,7 @@ LaunchShield returns:
 - covered security checks
 - hash-style browser evidence log
 - downloadable Markdown audit report
+- manual launch-review request brief
 
 ## Current Engine
 
@@ -51,6 +52,18 @@ flat keyword checklist:
 | Free scan | Top findings, score, covered checks, and exportable report. |
 | Founder feedback | Collect real examples, false positives, and report improvements. |
 | Manual review | Open paid reviews after case studies and a clear delivery workflow. |
+
+## Revenue Path
+
+LaunchShield now includes a manual review request flow:
+
+- Starter review: `$49`
+- Launch Fix Plan: `$199`
+- Team Review: `$499+`
+
+The scanner creates an email-ready request with the score, launch blockers,
+risk chains, top findings, and user context. Payment is handled after scope
+confirmation until a formal checkout is added.
 
 ## Public URL
 

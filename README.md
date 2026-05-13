@@ -133,7 +133,7 @@ Pilot path:
 
 - free launch scan for distribution
 - feedback from real builders
-- paid manual reviews after case studies and a clearer delivery workflow
+- paid manual launch reviews through the LaunchShield request flow
 
 ## Run Guard
 
