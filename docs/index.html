@@ -14,7 +14,7 @@
       --muted: #a9b7b2;
       --accent: #4fd1a5;
       --warn: #ffd166;
-      --bad: #ff6b6b;
+      --ink: #05100d;
     }
     * { box-sizing: border-box; }
     body {
@@ -22,10 +22,20 @@
       font-family: Inter, ui-sans-serif, system-ui, Segoe UI, Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.5;
+      line-height: 1.55;
     }
-    main { max-width: 1120px; margin: 0 auto; padding: 56px 20px; }
-    nav { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-bottom: 64px; }
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 40px 0 72px;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 56px;
+    }
     nav a, .button {
       color: var(--text);
       text-decoration: none;
@@ -33,69 +43,73 @@
       border-radius: 8px;
       padding: 10px 14px;
       background: rgba(255,255,255,.04);
-      font-weight: 700;
+      font-weight: 800;
     }
-    .brand { font-weight: 900; letter-spacing: 0; }
+    .brand { font-weight: 950; letter-spacing: 0; }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+    .primary { background: var(--accent); color: var(--ink); border-color: transparent; }
     .hero {
       display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, .9fr);
       gap: 28px;
       align-items: center;
-      min-height: 70vh;
+      min-height: 66vh;
     }
-    h1 { font-size: clamp(44px, 7vw, 82px); line-height: .95; margin: 0 0 20px; }
-    h2 { font-size: 28px; margin: 0 0 12px; }
-    p { color: var(--muted); font-size: 18px; margin: 0 0 18px; }
-    code, pre {
-      font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    h1 {
+      font-size: clamp(44px, 7vw, 82px);
+      line-height: .95;
+      letter-spacing: 0;
+      margin: 0 0 20px;
     }
+    h2 { font-size: 30px; margin: 0 0 12px; letter-spacing: 0; }
+    h3 { margin: 0 0 8px; letter-spacing: 0; }
+    p, li { color: var(--muted); font-size: 17px; }
+    p { margin: 0 0 18px; }
+    .pill { color: var(--accent); font-weight: 900; margin-bottom: 8px; }
+    .section { margin-top: 72px; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+    .stage-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+    .card, .stage, .terminal {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 18px;
+    }
+    .card { min-height: 150px; }
+    .stage { min-height: 128px; }
+    .stage span { display: block; color: var(--accent); font-size: 13px; font-weight: 900; margin-bottom: 6px; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
     pre {
       margin: 0;
-      padding: 18px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #050908;
       overflow: auto;
       color: #d7fff0;
+      background: #050908;
+      border-radius: 8px;
+      padding: 16px;
+      border: 1px solid var(--line);
     }
-    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
-    .primary { background: var(--accent); color: #05100d; border-color: transparent; }
-    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 42px; }
-    .stage-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
-    .card {
+    .terminal pre { border: 0; background: transparent; padding: 0; }
+    .proof-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+    .proof {
       border: 1px solid var(--line);
       border-radius: 8px;
       background: var(--panel);
       padding: 18px;
-      min-height: 148px;
     }
-    .stage {
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: var(--panel);
-      padding: 14px;
-      min-height: 120px;
-    }
-    .card strong { display: block; margin-bottom: 8px; }
-    .stage strong { display: block; margin-bottom: 6px; }
-    .stage span { color: var(--accent); font-weight: 800; font-size: 13px; }
-    .pill { color: var(--accent); font-weight: 800; }
-    .section { margin-top: 72px; }
-    .terminal { position: relative; }
-    .terminal:before {
-      content: "demo";
-      position: absolute;
-      top: -28px;
-      right: 0;
+    footer {
+      margin-top: 72px;
+      border-top: 1px solid var(--line);
+      padding-top: 24px;
       color: var(--muted);
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: .08em;
     }
-    footer { margin-top: 72px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 24px; }
     @media (max-width: 860px) {
-      .hero, .grid, .stage-grid { grid-template-columns: 1fr; }
       nav { align-items: flex-start; flex-direction: column; }
+      .hero, .grid, .stage-grid, .proof-list { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -104,28 +118,25 @@
     <nav>
       <div class="brand">AION Core</div>
       <div class="actions">
-        <a href="./vibeops/">VibeOps</a>
-        <a href="./launchshield.html">LaunchShield</a>
         <a href="https://github.com/Sourabh1845/aion-core">GitHub</a>
         <a href="https://pypi.org/project/aion-core/">PyPI</a>
+        <a href="./STAGE_STATUS.md">Stage Status</a>
       </div>
     </nav>
 
     <section class="hero">
       <div>
-        <p class="pill">Runtime security for AI agents</p>
-        <h1>Firewall, receipts, scan, and approvals for agent tool calls.</h1>
+        <p class="pill">Trust infrastructure for AI actions</p>
+        <h1>Firewall, receipts, scan, and approvals for AI agent tool calls.</h1>
         <p>
-          AION Core sits between AI agents and real-world tools. It blocks risky
-          MCP calls, records hash-verified receipts, scans weak configs, and
-          creates approval-required team policy decisions.
+          AION Core is an open-source control layer that sits between AI agents
+          and real-world tools. It decides what can run, what must be blocked,
+          what needs human approval, and what evidence should be recorded.
         </p>
         <div class="actions">
-          <a class="button primary" href="./vibeops/">Open VibeOps</a>
-          <a class="button primary" href="./launchshield.html">Scan Your Agent</a>
           <a class="button primary" href="https://github.com/Sourabh1845/aion-core">View Source</a>
-          <a class="button" href="./emergent-ventures-brief.html">Interview Brief</a>
-          <a class="button" href="./STAGE_STATUS.md">Stage Status</a>
+          <a class="button primary" href="https://pypi.org/project/aion-core/">Install From PyPI</a>
+          <a class="button" href="./STAGE_STATUS.md">Read 8-Stage Status</a>
         </div>
       </div>
       <div class="terminal">
@@ -135,6 +146,7 @@ aion-demo
 [PASS] scan detected unprotected MCP server
 [PASS] guard blocked generic shell action
 [PASS] team policy required approval
+[PASS] blocked destructive shell command
 [PASS] blocked secret exfiltration
 [PASS] allowed safe read
 Receipt verification: PASS</pre>
@@ -142,135 +154,120 @@ Receipt verification: PASS</pre>
     </section>
 
     <section class="section">
-      <h2>Core Thesis</h2>
-      <p>
-        AION Core started as trust infrastructure for AI agents. The core idea
-        is simple: when AI moves from chat into real-world actions, every tool
-        call needs policy, approval, receipts, scanning, and operator visibility.
-      </p>
-      <p>
-        VibeOps and LaunchShield are not pivots away from AION Core. They are
-        applied proof surfaces: LaunchShield scans AI workflows before launch,
-        and VibeOps shows how AION-style approvals, memory, and receipts can
-        run small-business operations.
-      </p>
+      <h2>What AION Core Does</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Runtime Guard</h3>
+          <p>Checks agent actions before they hit shell, files, APIs, databases, tools, or MCP servers.</p>
+        </div>
+        <div class="card">
+          <h3>MCP Firewall</h3>
+          <p>Wraps stdio MCP servers and blocks risky <code>tools/call</code> requests before execution.</p>
+        </div>
+        <div class="card">
+          <h3>Receipts</h3>
+          <p>Writes hash-verifiable JSONL evidence for allow, block, and approval-required decisions.</p>
+        </div>
+        <div class="card">
+          <h3>Risk Scan</h3>
+          <p>Scans MCP configs and policies for weak coverage, unprotected servers, and dangerous surfaces.</p>
+        </div>
+        <div class="card">
+          <h3>Team Policy</h3>
+          <p>Turns sensitive actions into approval-required decisions with approval logs and Slack-ready payloads.</p>
+        </div>
+        <div class="card">
+          <h3>Control View</h3>
+          <p>Summarizes receipts, blocked actions, pending approvals, and agent activity for operators.</p>
+        </div>
+      </div>
     </section>
 
     <section class="section">
-      <h2>8-Stage Core MVP Complete</h2>
+      <h2>8-Stage Core MVP</h2>
       <p>
-        The open-source core now covers the first 8 MVP stages needed to show
-        action control, evidence, risk discovery, firewalling, approvals, and
-        operator visibility.
+        AION Core has an MVP-complete implementation across the original 8-stage plan.
+        This means the core proof exists and runs locally; production hardening still
+        requires hosted auth, signed receipts, billing, and multi-tenant controls.
       </p>
       <div class="stage-grid">
-        <div class="stage"><span>1</span><strong>AION Guard</strong>Runtime action policy and allow/block decisions.</div>
-        <div class="stage"><span>2</span><strong>AION Receipts</strong>Hash-verifiable JSONL evidence for decisions.</div>
-        <div class="stage"><span>3</span><strong>AION Scan</strong>MCP and policy risk discovery.</div>
-        <div class="stage"><span>4</span><strong>Docs + Demo</strong>One-command demo and proof path.</div>
-        <div class="stage"><span>5</span><strong>Cloud Alignment</strong>Receipt format accepted by cloud/control surfaces.</div>
-        <div class="stage"><span>6</span><strong>MCP Firewall</strong>Tool-call firewall for MCP servers.</div>
-        <div class="stage"><span>7</span><strong>Team Policy</strong>Approval-required decisions and Slack-ready payloads.</div>
-        <div class="stage"><span>8</span><strong>Control Panel</strong>Summary and pending-approval operator view.</div>
-      </div>
-      <div class="actions">
-        <a class="button primary" href="./STAGE_STATUS.md">Read Stage Status</a>
-        <a class="button" href="./REAL_WORLD_CAPACITY_TEST.md">Read Capacity Test</a>
-      </div>
-    </section>
-
-    <section class="grid">
-      <div class="card"><strong>VibeOps</strong>Prompt-to-Run Business OS for service businesses: one command becomes jobs, worker tasks, payments, receipts, and daily reports.</div>
-      <div class="card"><strong>LaunchShield</strong>Paste an AI agent, MCP config, or AI-built app workflow and get a first-pass risk score, risky-chain detection, evidence log, exportable report, and launch fix request path.</div>
-      <div class="card"><strong>MCP Firewall</strong>Intercepts `tools/call` over stdio and blocks risky calls before they hit tools.</div>
-    </section>
-
-    <section class="section">
-      <h2>AION VibeOps</h2>
-      <p>
-        VibeOps is a global-beta app for small service businesses. Owners can
-        type or speak one command and AION creates jobs, assigns workers,
-        tracks payments, prepares receipts, and builds a daily summary.
-      </p>
-      <div class="actions">
-        <a class="button primary" href="./vibeops/">Open VibeOps</a>
+        <div class="stage"><span>Stage 1</span><h3>AION Guard</h3><p>Runtime action policy and allow/block decisions.</p></div>
+        <div class="stage"><span>Stage 2</span><h3>AION Receipts</h3><p>Hash-verifiable decision evidence.</p></div>
+        <div class="stage"><span>Stage 3</span><h3>AION Scan</h3><p>MCP and policy risk discovery.</p></div>
+        <div class="stage"><span>Stage 4</span><h3>Docs + Demo</h3><p>One-command local proof path.</p></div>
+        <div class="stage"><span>Stage 5</span><h3>Cloud Alignment</h3><p><code>aion.receipt.v1</code> receipt bundle alignment.</p></div>
+        <div class="stage"><span>Stage 6</span><h3>MCP Firewall</h3><p>Tool-call firewall for MCP servers.</p></div>
+        <div class="stage"><span>Stage 7</span><h3>Team Policy</h3><p>Approval decisions and Slack-ready payloads.</p></div>
+        <div class="stage"><span>Stage 8</span><h3>Control Panel</h3><p>Summary and pending-approval operator views.</p></div>
       </div>
     </section>
 
     <section class="section">
-      <h2>AION LaunchShield</h2>
-      <p>
-        LaunchShield is a browser-based first-pass scanner for AI agents and
-        AI-built apps. It parses MCP-style JSON when provided, flags obvious
-        launch risks such as dangerous tools, weak auth, secret exposure,
-        missing approvals, sensitive data access, and risky tool combinations.
-        Builders can export a report or request a manual launch fix plan.
-      </p>
-      <div class="actions">
-        <a class="button primary" href="./launchshield.html">Open LaunchShield</a>
-        <a class="button" href="./launchshield-sample-report.html">View Sample Fix Plan</a>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Built For The Agent Era</h2>
-      <p>
-        The first AION Core MVP covers Guard, Receipts, Scan, MCP Firewall,
-        Team Policy, Cloud receipt alignment, and a control panel MVP.
-      </p>
-    </section>
-
-    <section class="section">
-      <h2>Proof Pack</h2>
-      <p>
-        AION Core includes deterministic proof tests that model LangChain,
-        CrewAI, Groq function-calling, and raw MCP agent workflows.
-      </p>
+      <h2>One-Command Demo</h2>
+      <p>Run the full local proof path from the package:</p>
+      <pre>python -m pip install aion-core
+aion-demo</pre>
+      <p>Or from the repository:</p>
       <pre>$env:PYTHONPATH='src'
-python examples\proof_pack\agent_workflow_proof.py
+python -m aion_core.demo</pre>
+    </section>
 
-AION Core Agent Workflow Proof Pack
+    <section class="section">
+      <h2>Real Tests Performed</h2>
+      <div class="proof-list">
+        <div class="proof">
+          <h3>Proof Pack</h3>
+          <p>Deterministic agent-workflow proof tests model LangChain, CrewAI, Groq function-calling, and raw MCP workflows.</p>
+          <pre>AION Core Agent Workflow Proof Pack
 Scenarios: 6/6 passed
 Receipts: 5 hash-verified</pre>
-      <div class="grid">
-        <div class="card"><strong>LangChain</strong>Real StructuredTool tests block destructive shell commands and allow safe file reads.</div>
-        <div class="card"><strong>CrewAI</strong>Real Agent, Task, and BaseTool tests block destructive tool calls and allow safe lookups.</div>
-        <div class="card"><strong>Groq</strong>Real live function-calling test blocks destructive shell and allows safe summary tools.</div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Real SDK Tests</h2>
-      <p>
-        AION Core also includes real SDK integration tests. LangChain 1.2.18 and
-        CrewAI 1.14.4 passed integration tests against their actual tool APIs.
-        Groq 1.2.0 passed a live tool-calling test with llama-3.1-8b-instant.
-      </p>
-      <div class="grid">
-        <div class="card"><strong>LangChain</strong>Real StructuredTool calls: destructive shell blocked before function execution, safe read allowed.</div>
-        <div class="card"><strong>CrewAI</strong>Real Agent, Task, and BaseTool objects: destructive tool blocked, safe lookup allowed.</div>
-        <div class="card"><strong>Groq</strong>Real live function call: destructive shell blocked, safe ticket summary allowed.</div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Real-World Capacity</h2>
-      <p>
-        A release-ops agent workflow exercises all 8 MVP layers together:
-        Scan, Guard, Receipts, Cloud-ready bundle, MCP Firewall, Team Policy,
-        Control Panel summary, and report generation.
-      </p>
-      <pre>$env:PYTHONPATH='src'
-python examples\real_world_capacity\release_ops_capacity_test.py
-
-AION Real-World Capacity Test
+        </div>
+        <div class="proof">
+          <h3>Real SDK Integrations</h3>
+          <p>Real SDK tests were performed against LangChain, CrewAI, and Groq tool/function calling surfaces.</p>
+          <pre>LangChain: real StructuredTool test passed
+CrewAI: real Agent/Task/BaseTool test passed
+Groq: live function-calling test passed</pre>
+        </div>
+        <div class="proof">
+          <h3>Real-World Capacity</h3>
+          <p>A release-ops workflow exercised all 8 AION MVP layers together.</p>
+          <pre>AION Real-World Capacity Test
 Scenarios: 8/8 passed
 Receipts: 5 hash-verified
 Pending approvals: 1</pre>
-      <div class="grid">
-        <div class="card"><strong>Release Ops</strong>8/8 scenarios passed across all 8 AION MVP layers.</div>
-        <div class="card"><strong>Single Agent</strong>Customer support workflow: 9/9 passed, sensitive export blocked, account deletion requires approval.</div>
-        <div class="card"><strong>Multi-Agent</strong>Planner, research, coding, and ops agents: 10/10 passed with per-agent receipts.</div>
+        </div>
+        <div class="proof">
+          <h3>Single + Multi-Agent</h3>
+          <p>Hardcore single-agent and multi-agent workflows tested blocking, approvals, and per-agent receipts.</p>
+          <pre>Single-agent support: 9/9 passed
+Multi-agent incident response: 10/10 passed</pre>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="button primary" href="./PROOF_PACK.md">Proof Pack</a>
+        <a class="button" href="./REAL_SDK_INTEGRATIONS.md">Real SDK Tests</a>
+        <a class="button" href="./REAL_WORLD_CAPACITY_TEST.md">Capacity Test</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Run The MCP Firewall</h2>
+      <p>Place AION in front of any stdio MCP server:</p>
+      <pre>aion-mcp-firewall --policy examples/policies/stage6-default.json --receipt-log receipts/aion.jsonl -- python path/to/mcp_server.py</pre>
+    </section>
+
+    <section class="section">
+      <h2>Current Status</h2>
+      <p>
+        AION Core is an MVP-complete open-source prototype for AI action control.
+        It is ready for demos, early technical feedback, and real integration tests.
+        It is not yet a production enterprise SaaS.
+      </p>
+      <div class="actions">
+        <a class="button primary" href="https://github.com/Sourabh1845/aion-core">GitHub</a>
+        <a class="button primary" href="https://pypi.org/project/aion-core/">PyPI</a>
+        <a class="button" href="./STAGE_STATUS.md">Stage Status</a>
       </div>
     </section>
 
