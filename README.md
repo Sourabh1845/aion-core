@@ -10,6 +10,41 @@ AI Agent -> AION Guard / MCP Firewall -> Tool/API/System
                                   +-> verified JSONL receipt log
 ```
 
+## Thesis
+
+AION Core is the trust/control layer for AI systems that take real-world
+actions. As AI agents move beyond chat into tools, files, payments, customer
+messages, and business workflows, teams need a standard way to decide:
+
+- what the agent is allowed to do
+- what needs human approval
+- what must be blocked
+- what evidence should be recorded
+- what operators can inspect later
+
+LaunchShield and VibeOps are applied proof surfaces for this thesis. They do
+not replace AION Core. LaunchShield tests AI workflows before launch. VibeOps
+shows how AION-style approvals, receipts, and business memory can power daily
+small-business operations.
+
+## 8-Stage MVP Status
+
+The first AION Core MVP now covers all 8 planned stages:
+
+| Stage | Layer | MVP Status |
+|---|---|---|
+| 1 | AION Guard | Complete: runtime action policy and allow/block decisions. |
+| 2 | AION Receipts | Complete: hash-verifiable decision evidence. |
+| 3 | AION Scan | Complete: MCP and policy risk discovery. |
+| 4 | Docs + Demo | Complete: one-command local demo and proof path. |
+| 5 | Cloud Alignment | Complete for alignment MVP: `aion.receipt.v1` bundle accepted by cloud/control surfaces. |
+| 6 | MCP Firewall | Complete: stdio MCP tool-call firewall. |
+| 7 | Team Policy / Approvals | Complete for MVP: approval-required decisions and Slack-ready payloads. |
+| 8 | Control Panel | Complete for MVP: summary and pending-approval operator views. |
+
+See [Stage status](docs/STAGE_STATUS.md) and
+[Emergent Ventures brief](docs/EMERGENT_VENTURES_BRIEF.md).
+
 ## One-Command Demo
 
 From the repo root:

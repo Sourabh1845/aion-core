@@ -2,6 +2,11 @@
 
 Current source of truth for the 8-stage AION Core plan.
 
+AION Core is **MVP-complete across all 8 stages**. That means the core proof
+exists and can be demonstrated locally. It does not mean the company is already
+production SaaS. Production work remains: hosted auth, signed receipts, billing,
+multi-tenant controls, and enterprise deployment hardening.
+
 | Stage | Name | Status | Notes |
 |---|---|---|---|
 | 1 | AION Guard | Complete for core MVP | Generic action checks, policy decisions, CLI, and receipts exist. |
@@ -15,5 +20,6 @@ Current source of truth for the 8-stage AION Core plan.
 
 ## Next Recommended Work
 
-1. Ecosystem cleanup: website, PyPI, GitHub, outreach copy.
+1. Interview-ready framing: AION Core is the infrastructure thesis; LaunchShield and VibeOps are applied proof surfaces.
 2. Production hardening: auth boundaries, hosted DB migrations, signed receipts, and real Slack/webhook delivery.
+3. Distribution wedge: use VibeOps to prove safe AI actions in real small-business workflows.

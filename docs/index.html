@@ -61,6 +61,7 @@
     .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
     .primary { background: var(--accent); color: #05100d; border-color: transparent; }
     .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 42px; }
+    .stage-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
     .card {
       border: 1px solid var(--line);
       border-radius: 8px;
@@ -68,7 +69,16 @@
       padding: 18px;
       min-height: 148px;
     }
+    .stage {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 14px;
+      min-height: 120px;
+    }
     .card strong { display: block; margin-bottom: 8px; }
+    .stage strong { display: block; margin-bottom: 6px; }
+    .stage span { color: var(--accent); font-weight: 800; font-size: 13px; }
     .pill { color: var(--accent); font-weight: 800; }
     .section { margin-top: 72px; }
     .terminal { position: relative; }
@@ -84,7 +94,7 @@
     }
     footer { margin-top: 72px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 24px; }
     @media (max-width: 860px) {
-      .hero, .grid { grid-template-columns: 1fr; }
+      .hero, .grid, .stage-grid { grid-template-columns: 1fr; }
       nav { align-items: flex-start; flex-direction: column; }
     }
   </style>
@@ -114,6 +124,7 @@
           <a class="button primary" href="./vibeops/">Open VibeOps</a>
           <a class="button primary" href="./launchshield.html">Scan Your Agent</a>
           <a class="button primary" href="https://github.com/Sourabh1845/aion-core">View Source</a>
+          <a class="button" href="./EMERGENT_VENTURES_BRIEF.md">Interview Brief</a>
           <a class="button" href="./STAGE_STATUS.md">Stage Status</a>
         </div>
       </div>
@@ -127,6 +138,44 @@ aion-demo
 [PASS] blocked secret exfiltration
 [PASS] allowed safe read
 Receipt verification: PASS</pre>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Core Thesis</h2>
+      <p>
+        AION Core started as trust infrastructure for AI agents. The core idea
+        is simple: when AI moves from chat into real-world actions, every tool
+        call needs policy, approval, receipts, scanning, and operator visibility.
+      </p>
+      <p>
+        VibeOps and LaunchShield are not pivots away from AION Core. They are
+        applied proof surfaces: LaunchShield scans AI workflows before launch,
+        and VibeOps shows how AION-style approvals, memory, and receipts can
+        run small-business operations.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>8-Stage Core MVP Complete</h2>
+      <p>
+        The open-source core now covers the first 8 MVP stages needed to show
+        action control, evidence, risk discovery, firewalling, approvals, and
+        operator visibility.
+      </p>
+      <div class="stage-grid">
+        <div class="stage"><span>1</span><strong>AION Guard</strong>Runtime action policy and allow/block decisions.</div>
+        <div class="stage"><span>2</span><strong>AION Receipts</strong>Hash-verifiable JSONL evidence for decisions.</div>
+        <div class="stage"><span>3</span><strong>AION Scan</strong>MCP and policy risk discovery.</div>
+        <div class="stage"><span>4</span><strong>Docs + Demo</strong>One-command demo and proof path.</div>
+        <div class="stage"><span>5</span><strong>Cloud Alignment</strong>Receipt format accepted by cloud/control surfaces.</div>
+        <div class="stage"><span>6</span><strong>MCP Firewall</strong>Tool-call firewall for MCP servers.</div>
+        <div class="stage"><span>7</span><strong>Team Policy</strong>Approval-required decisions and Slack-ready payloads.</div>
+        <div class="stage"><span>8</span><strong>Control Panel</strong>Summary and pending-approval operator view.</div>
+      </div>
+      <div class="actions">
+        <a class="button primary" href="./STAGE_STATUS.md">Read Stage Status</a>
+        <a class="button" href="./REAL_WORLD_CAPACITY_TEST.md">Read Capacity Test</a>
       </div>
     </section>
 
