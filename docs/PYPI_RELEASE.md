@@ -1,6 +1,6 @@
 # PyPI Release Checklist
 
-Package target: `aion-core==0.8.2`
+Package target: `aion-core==0.8.3`
 
 ## Preflight
 
@@ -58,7 +58,7 @@ To use it:
 
 1. Create a PyPI API token.
 2. Add it as GitHub repository secret `PYPI_API_TOKEN`.
-3. Publish GitHub release `v0.8.2`.
+3. Publish GitHub release `v0.8.3`.
 4. The workflow builds and uploads `aion-core` to PyPI.
 
 ## After Publish

@@ -52,6 +52,7 @@ Before GitHub/early-user launch:
 - [x] Publish `aion-core==0.8.0` to PyPI.
 - [x] Publish `aion-core==0.8.1` proof-hardened release to PyPI.
 - [x] Publish `aion-core==0.8.2` proof-hardened Core release to PyPI.
+- [ ] Publish `aion-core==0.8.3` pure-Core signed receipt release to PyPI.
 - [ ] Add first 20 target users for outreach.
 - [ ] Record and upload 60-90 second demo video.
 - [ ] Add screenshot/video link to README.

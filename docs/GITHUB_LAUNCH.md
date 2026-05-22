@@ -9,10 +9,10 @@ cd C:\Users\SOURABH RANJAN\aion-core
 git init
 git branch -M main
 git add .
-git commit -m "Launch AION Core 0.8.2"
+git commit -m "Launch AION Core 0.8.3"
 git remote add origin https://github.com/Sourabh1845/aion-core.git
 git push -u origin main
-git push origin v0.8.2
+git push origin v0.8.3
 ```
 
 ## GitHub Settings
@@ -31,8 +31,8 @@ git push origin v0.8.2
   - Branch: `main`
   - Folder: `/docs`
 - Create release:
-  - Tag: `v0.8.2`
-  - Title: `AION Core 0.8.2`
+  - Tag: `v0.8.3`
+  - Title: `AION Core 0.8.3`
 - Add repository secret for PyPI publishing:
   - Name: `PYPI_API_TOKEN`
   - Value: your PyPI project/account API token
@@ -40,7 +40,7 @@ git push origin v0.8.2
 ## Release Notes
 
 ```text
-AION Core 0.8.2 is a proof-hardened public infrastructure MVP for AI agent action control.
+AION Core 0.8.3 is a proof-hardened public infrastructure MVP for AI agent action control.
 
 Includes:
 - AION Guard runtime action checks
