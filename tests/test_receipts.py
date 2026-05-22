@@ -43,6 +43,37 @@ class ReceiptTests(unittest.TestCase):
             self.assertTrue(receipts[0]["receipt_id"].startswith("rcpt_"))
             self.assertEqual(len(receipts[0]["receipt_hash"]), 64)
 
+    def test_signed_receipt_verifies_with_hmac_key(self):
+        with temporary_workspace_dir() as temp_dir:
+            path = Path(temp_dir) / "signed-receipts.jsonl"
+            sink = JsonlReceiptSink(path, signing_key="test-secret", signing_key_id="unit-key")
+
+            sink.write({"tool": "shell", "decision": "block", "rule_id": "no-shell"})
+
+            receipts = verify_jsonl(path, signing_key="test-secret", require_signature=True)
+            self.assertEqual(len(receipts), 1)
+            self.assertEqual(receipts[0]["signature_algorithm"], "hmac-sha256")
+            self.assertEqual(receipts[0]["signature_key_id"], "unit-key")
+            self.assertEqual(len(receipts[0]["receipt_signature"]), 64)
+
+    def test_signed_receipt_rejects_wrong_hmac_key(self):
+        with temporary_workspace_dir() as temp_dir:
+            path = Path(temp_dir) / "signed-receipts.jsonl"
+            sink = JsonlReceiptSink(path, signing_key="correct-secret")
+            sink.write({"tool": "shell", "decision": "block", "rule_id": "no-shell"})
+
+            with self.assertRaises(ReceiptVerificationError):
+                verify_jsonl(path, signing_key="wrong-secret", require_signature=True)
+
+    def test_require_signature_rejects_unsigned_receipt(self):
+        with temporary_workspace_dir() as temp_dir:
+            path = Path(temp_dir) / "receipts.jsonl"
+            sink = JsonlReceiptSink(path)
+            sink.write({"tool": "read_file", "decision": "allow"})
+
+            with self.assertRaises(ReceiptVerificationError):
+                verify_jsonl(path, require_signature=True)
+
     def test_verify_rejects_tampered_receipt(self):
         with temporary_workspace_dir() as temp_dir:
             path = Path(temp_dir) / "receipts.jsonl"

@@ -40,7 +40,7 @@ git push origin v0.8.2
 ## Release Notes
 
 ```text
-AION Core 0.8.2 adds LaunchShield CLI on top of the proof-hardened public infrastructure MVP.
+AION Core 0.8.2 is a proof-hardened public infrastructure MVP for AI agent action control.
 
 Includes:
 - AION Guard runtime action checks
@@ -52,8 +52,6 @@ Includes:
 - One-command demo: aion-demo
 - Real LangChain, CrewAI, and Groq live tests
 - Single-agent and multi-agent real-world capacity tests
-- AION LaunchShield CLI for local AI agent/app launch-risk scans
-- MCP config parsing, launch blockers, and risky tool-combination detection
 ```
 
 ## Smoke Test After Push

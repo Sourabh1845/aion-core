@@ -1,8 +1,11 @@
 # AION Core
 
-Runtime action control, receipt, and firewall layer for AI agents.
+Runtime action control, receipt, scan, approval, and firewall layer for AI agents.
 
-AION Core contains the open-source infrastructure pieces behind AION: Guard, Receipts, Scan, Team Policy, and the MCP Firewall.
+AION Core is an open-source infrastructure prototype for AI systems that call
+real tools. It sits between an agent and external tools/APIs, checks the action
+against policy, blocks dangerous calls, records verifiable receipts, and marks
+sensitive actions for human approval.
 
 ```text
 AI Agent -> AION Guard / MCP Firewall -> Tool/API/System
@@ -12,24 +15,21 @@ AI Agent -> AION Guard / MCP Firewall -> Tool/API/System
 
 ## Thesis
 
-AION Core is the trust/control layer for AI systems that take real-world
-actions. As AI agents move beyond chat into tools, files, payments, customer
-messages, and business workflows, teams need a standard way to decide:
+AI is moving from chat to action. Agents can call tools, write files, send
+messages, use APIs, update business systems, and coordinate workflows. Before
+that becomes safe at scale, teams need a control layer that can answer:
 
-- what the agent is allowed to do
-- what needs human approval
-- what must be blocked
-- what evidence should be recorded
-- what operators can inspect later
+- what is the agent allowed to do?
+- what must be blocked?
+- what needs human approval?
+- what evidence should be recorded?
+- what can an operator inspect later?
 
-LaunchShield and VibeOps are applied proof surfaces for this thesis. They do
-not replace AION Core. LaunchShield tests AI workflows before launch. VibeOps
-shows how AION-style approvals, receipts, and business memory can power daily
-small-business operations.
+AION Core is the first working version of that layer.
 
 ## 8-Stage MVP Status
 
-The first AION Core MVP now covers all 8 planned stages:
+The first AION Core MVP covers all 8 planned stages:
 
 | Stage | Layer | MVP Status |
 |---|---|---|
@@ -42,29 +42,33 @@ The first AION Core MVP now covers all 8 planned stages:
 | 7 | Team Policy / Approvals | Complete for MVP: approval-required decisions and Slack-ready payloads. |
 | 8 | Control Panel | Complete for MVP: summary and pending-approval operator views. |
 
-See [Stage status](docs/STAGE_STATUS.md) and
-[Emergent Ventures brief](docs/EMERGENT_VENTURES_BRIEF.md).
+See [Stage status](docs/STAGE_STATUS.md).
+
+## Install
+
+```powershell
+python -m pip install aion-core
+```
+
+For local development:
+
+```powershell
+python -m pip install -e .
+```
 
 ## One-Command Demo
 
-From the repo root:
+From PyPI/local install:
+
+```powershell
+aion-demo
+```
+
+From the repository:
 
 ```powershell
 $env:PYTHONPATH='src'
 python -m aion_core.demo
-```
-
-After local install or PyPI install:
-
-```powershell
-python -m pip install aion-core
-aion-demo
-```
-
-For editable development installs:
-
-```powershell
-python -m pip install -e .
 ```
 
 Expected result:
@@ -82,14 +86,54 @@ Approvals written to: aion-demo-output/approvals.jsonl
 Receipt verification: PASS (6 receipt(s), hash-verified)
 ```
 
-This proves the infrastructure wedge:
+## Commands
 
-- generic Guard actions can be allowed or blocked
-- dangerous shell action is blocked before reaching the tool
-- secret exfiltration attempt is blocked before reaching the tool
-- safe file-read action is allowed
-- approval-required team actions create approval records
-- every decision gets a receipt
+```text
+aion-demo
+aion-mcp-firewall
+aion-guard
+aion-receipts
+aion-scan
+aion-team
+```
+
+## Run Guard
+
+Check a generic action:
+
+```powershell
+$env:PYTHONPATH='src'
+python -m aion_core.guard_cli check --policy examples\policies\stage6-default.json --receipt-log receipts\guard.jsonl --action-type shell.command --tool shell --arguments-file examples\actions\destructive_shell_args.json --agent-id demo --owner local
+```
+
+## Run The MCP Firewall
+
+Run AION in front of any stdio MCP server:
+
+```powershell
+aion-mcp-firewall --policy examples/policies/stage6-default.json --receipt-log receipts/aion.jsonl -- python path/to/mcp_server.py
+```
+
+For local development without installing:
+
+```powershell
+$env:PYTHONPATH='src'
+python -m aion_core.cli --policy examples/policies/stage6-default.json --receipt-log receipts/aion.jsonl -- python path/to/mcp_server.py
+```
+
+## Receipt Verification
+
+Verify a JSONL receipt log:
+
+```powershell
+aion-receipts verify receipts\aion.jsonl
+```
+
+Inspect a receipt summary:
+
+```powershell
+aion-receipts inspect receipts\aion.jsonl
+```
 
 ## Proof Pack
 
@@ -109,7 +153,9 @@ Scenarios: 6/6 passed
 Receipts: 5 hash-verified
 ```
 
-Real SDK integration tests are also included:
+## Real SDK Tests
+
+Verified integration tests include:
 
 - LangChain `1.2.18`: real `StructuredTool` guard test passed.
 - CrewAI `1.14.4`: real `Agent`, `Task`, and `BaseTool` guard test passed.
@@ -125,130 +171,12 @@ $env:PYTHONPATH='src'
 python examples\real_world_capacity\release_ops_capacity_test.py --output-dir test-output\real-world-final
 ```
 
-Expected result:
+Verified results:
 
 ```text
-AION Real-World Capacity Test
-Scenarios: 8/8 passed
-Receipts: 5 hash-verified
-Pending approvals: 1
-```
-
-Additional verified workflows:
-
-- Hardcore single-agent customer support workflow: `9/9 passed`, `6` hash-verified receipts, `1` pending approval.
-- Hardcore multi-agent incident response workflow: `10/10 passed`, `7` hash-verified receipts, `1` pending approval.
-
-## AION LaunchShield
-
-LaunchShield is a browser-based first-pass scanner for AI agents and AI-built apps.
-Paste an agent prompt, tool list, MCP config, or launch notes to generate a risk
-score, risky-chain detection, launch blockers, covered security checks, an
-evidence log, and a downloadable report.
-
-Public app:
-
-```text
-https://sourabh1845.github.io/aion-core/launchshield.html
-```
-
-Local CLI:
-
-```powershell
-aion-launchshield --project-name "My Agent" --workflow-file workflow.txt --tools-file tools.txt --mcp-config-file mcp.json --surface MCP --control receipts --output launchshield-report.md
-```
-
-JSON output:
-
-```powershell
-aion-launchshield --workflow-file workflow.txt --tools-file tools.txt --mcp-config-file mcp.json --surface MCP --json
-```
-
-LaunchShield revenue path:
-
-- free launch scan for distribution
-- exportable report with blockers, risk chains, and fixes
-- paid launch fix plan requests for builders who want manual review before shipping
-
-## Run Guard
-
-Check a generic action:
-
-```powershell
-$env:PYTHONPATH='src'
-python -m aion_core.guard_cli check --policy examples\policies\stage6-default.json --receipt-log receipts\guard.jsonl --action-type shell.command --tool shell --arguments-file examples\actions\destructive_shell_args.json --agent-id demo --owner local
-```
-
-## Run The Firewall
-
-Run AION in front of any stdio MCP server:
-
-```powershell
-aion-mcp-firewall --policy examples/policies/stage6-default.json --receipt-log receipts/aion.jsonl -- python path/to/mcp_server.py
-```
-
-For local development without installing:
-
-```powershell
-$env:PYTHONPATH='src'
-python -m aion_core.cli --policy examples/policies/stage6-default.json --receipt-log receipts/aion.jsonl -- python path/to/mcp_server.py
-```
-
-## Manual Attack Demo
-
-Blocked dangerous command:
-
-```powershell
-$env:PYTHONPATH='src'
-Get-Content examples/attacks/destructive_shell.json | python -m aion_core.cli --policy examples/policies/stage6-default.json --receipt-log receipts/demo.jsonl -- python examples/demo_mcp_server.py
-```
-
-Allowed safe call:
-
-```powershell
-$env:PYTHONPATH='src'
-Get-Content examples/attacks/safe_read.json | python -m aion_core.cli --policy examples/policies/stage6-default.json --receipt-log receipts/demo.jsonl -- python examples/demo_mcp_server.py
-```
-
-## Policy Shape
-
-Policies are JSON so the MVP has zero runtime dependencies.
-
-```json
-{
-  "default_action": "allow",
-  "rules": [
-    {
-      "id": "block-shell-delete",
-      "match": {
-        "tool": ["shell", "run_command"],
-        "argument_contains": ["rm -rf", "Remove-Item", "del /s"]
-      },
-      "action": "block",
-      "reason": "Destructive shell command patterns require explicit approval."
-    }
-  ]
-}
-```
-
-Supported rule matchers:
-
-- `tool`: exact tool names or `*` wildcards.
-- `argument_contains`: risky strings searched inside serialized arguments.
-- `argument_regex`: risky regular expressions searched inside serialized arguments.
-- `owner`: optional agent owner/team identity.
-
-Supported actions:
-
-- `allow`
-- `block`
-
-## Receipt Example
-
-Every MCP `tools/call` decision is logged as JSONL:
-
-```json
-{"decision":"block","tool":"shell","rule_id":"block-shell-delete","reason":"Destructive shell command patterns require explicit approval."}
+AION Real-World Capacity Test: 8/8 passed, 5 hash-verified receipts, 1 pending approval
+Hardcore single-agent support workflow: 9/9 passed, 6 hash-verified receipts, 1 pending approval
+Hardcore multi-agent incident response: 10/10 passed, 7 hash-verified receipts, 1 pending approval
 ```
 
 ## Development
@@ -270,25 +198,16 @@ Useful docs:
 - [Real agent test plan](docs/REAL_AGENT_TESTS.md)
 - [Real SDK integrations](docs/REAL_SDK_INTEGRATIONS.md)
 - [Real-world capacity test](docs/REAL_WORLD_CAPACITY_TEST.md)
-- [AION LaunchShield](docs/LAUNCHSHIELD.md)
 - [Team policy and approvals](docs/TEAM_POLICY_APPROVALS.md)
 - [Stage 5 Cloud alignment](docs/STAGE5_CLOUD_ALIGNMENT.md)
 - [AION Cloud control panel](docs/STAGE8_CONTROL_PANEL.md)
 - [Stage 6 completion report](docs/STAGE6_COMPLETION_REPORT.md)
 - [Repo structure](docs/REPO_STRUCTURE.md)
-- [Stage 6 demo guide](docs/STAGE6_DEMO.md)
 - [Install](docs/INSTALL.md)
 - [Real MCP integration](docs/REAL_MCP_INTEGRATION.md)
 - [Filesystem MCP example](docs/FILESYSTEM_MCP_EXAMPLE.md)
 - [Architecture](docs/ARCHITECTURE.md)
-- [Launch checklist](docs/LAUNCH_CHECKLIST.md)
-- [Launch outreach kit](docs/LAUNCH_OUTREACH_KIT.md)
-- [GitHub launch](docs/GITHUB_LAUNCH.md)
-- [PyPI release](docs/PYPI_RELEASE.md)
-- [Website copy](docs/WEBSITE_COPY.md)
 - [Verification](docs/VERIFICATION.md)
-- [Demo video script](docs/DEMO_VIDEO_SCRIPT.md)
-- [Launch post draft](docs/LAUNCH_POST.md)
 - [Roadmap](docs/ROADMAP.md)
 
 ## Current Scope
@@ -301,15 +220,17 @@ Current core scope:
 - runtime policy checks for `tools/call`
 - MCP-compatible JSON-RPC block responses
 - hash-verified JSONL audit receipts
+- optional HMAC-signed receipt verification
 - team approval-required policy decisions
 - AION Cloud control panel summary and pending approval views
 - dependency-free Python core
 
 Next infrastructure layers:
 
-- signed receipts
-- agent identity
+- hosted API server
+- hosted auth and tenant model
 - cloud receipt vault
-- tool risk registry
+- tenant-scoped signing key management
 - real Slack/webhook approval delivery
-- compliance exports
+- enterprise audit exports
+- hardened policy engine

@@ -14,7 +14,7 @@ python -m aion_core.demo
 Expected:
 
 ```text
-Ran 29 tests
+Ran 28 tests
 OK (skipped=2)
 Receipt verification: PASS (6 receipt(s), hash-verified)
 ```
@@ -70,7 +70,6 @@ aion-receipts --help
 aion-guard --help
 aion-scan --help
 aion-team --help
-aion-launchshield --help
 aion-mcp-firewall --help
 ```
 

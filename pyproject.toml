@@ -31,7 +31,6 @@ aion-receipts = "aion_core.receipt_cli:main"
 aion-guard = "aion_core.guard_cli:main"
 aion-scan = "aion_core.scan_cli:main"
 aion-team = "aion_core.team_cli:main"
-aion-launchshield = "aion_core.launchshield:main"
 
 [project.urls]
 Homepage = "https://sourabh1845.github.io/aion-core/"

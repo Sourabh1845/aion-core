@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import hmac
 import json
 from pathlib import Path
 from datetime import datetime, timezone
@@ -12,6 +13,7 @@ from uuid import uuid4
 
 RECEIPT_SCHEMA_VERSION = "aion.receipt.v1"
 HASH_ALGORITHM = "sha256"
+SIGNATURE_ALGORITHM = "hmac-sha256"
 
 
 class ReceiptSink(Protocol):
@@ -23,12 +25,16 @@ class ReceiptVerificationError(ValueError):
 
 
 class JsonlReceiptSink:
-    def __init__(self, path: Path):
+    def __init__(self, path: Path, signing_key: str | bytes | None = None, signing_key_id: str | None = None):
         self.path = path
+        self.signing_key = signing_key
+        self.signing_key_id = signing_key_id
 
     def write(self, receipt: dict[str, Any]) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         normalized = normalize_receipt(receipt)
+        if self.signing_key is not None:
+            normalized = sign_receipt(normalized, self.signing_key, self.signing_key_id)
         with self.path.open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(normalized, sort_keys=True, ensure_ascii=True) + "\n")
 
@@ -67,15 +73,42 @@ def normalize_receipt(receipt: dict[str, Any]) -> dict[str, Any]:
 
 
 def receipt_hash(receipt: dict[str, Any]) -> str:
-    payload = {key: value for key, value in receipt.items() if key != "receipt_hash"}
+    payload = {
+        key: value
+        for key, value in receipt.items()
+        if key not in {"receipt_hash", "signature_algorithm", "signature_key_id", "receipt_signature"}
+    }
     return hashlib.sha256(canonical_json(payload).encode("utf-8")).hexdigest()
+
+
+def sign_receipt(
+    receipt: dict[str, Any],
+    signing_key: str | bytes,
+    signing_key_id: str | None = None,
+) -> dict[str, Any]:
+    signed = dict(receipt)
+    signed["signature_algorithm"] = SIGNATURE_ALGORITHM
+    if signing_key_id:
+        signed["signature_key_id"] = signing_key_id
+    signed["receipt_signature"] = receipt_signature(signed, signing_key)
+    return signed
+
+
+def receipt_signature(receipt: dict[str, Any], signing_key: str | bytes) -> str:
+    key = signing_key.encode("utf-8") if isinstance(signing_key, str) else signing_key
+    payload = {key: value for key, value in receipt.items() if key != "receipt_signature"}
+    return hmac.new(key, canonical_json(payload).encode("utf-8"), hashlib.sha256).hexdigest()
 
 
 def canonical_json(value: Any) -> str:
     return json.dumps(value, sort_keys=True, ensure_ascii=True, separators=(",", ":"))
 
 
-def verify_receipt(receipt: dict[str, Any]) -> None:
+def verify_receipt(
+    receipt: dict[str, Any],
+    signing_key: str | bytes | None = None,
+    require_signature: bool = False,
+) -> None:
     required = [
         "schema_version",
         "receipt_id",
@@ -106,6 +139,21 @@ def verify_receipt(receipt: dict[str, Any]) -> None:
         raise ReceiptVerificationError(
             f"receipt_hash mismatch for {receipt['receipt_id']}: expected {expected_hash}"
         )
+    has_signature = "receipt_signature" in receipt
+    if require_signature and not has_signature:
+        raise ReceiptVerificationError(f"missing receipt_signature for {receipt['receipt_id']}")
+    if has_signature:
+        if receipt.get("signature_algorithm") != SIGNATURE_ALGORITHM:
+            raise ReceiptVerificationError(
+                f"unsupported signature_algorithm for {receipt['receipt_id']}: "
+                f"{receipt.get('signature_algorithm')}"
+            )
+        if signing_key is not None:
+            expected_signature = receipt_signature(receipt, signing_key)
+            if not hmac.compare_digest(str(receipt["receipt_signature"]), expected_signature):
+                raise ReceiptVerificationError(
+                    f"receipt_signature mismatch for {receipt['receipt_id']}: expected {expected_signature}"
+                )
 
 
 def load_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -125,10 +173,14 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
     return receipts
 
 
-def verify_jsonl(path: Path) -> list[dict[str, Any]]:
+def verify_jsonl(
+    path: Path,
+    signing_key: str | bytes | None = None,
+    require_signature: bool = False,
+) -> list[dict[str, Any]]:
     receipts = load_jsonl(path)
     for receipt in receipts:
-        verify_receipt(receipt)
+        verify_receipt(receipt, signing_key=signing_key, require_signature=require_signature)
     return receipts
 
 

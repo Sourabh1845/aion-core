@@ -11,7 +11,7 @@ Result:
 
 ```text
 Base environment:
-Ran 29 tests
+Ran 28 tests
 OK (skipped=2)
 
 Real SDK venv:
@@ -153,21 +153,39 @@ Result:
 OK: verified 6 receipt(s)
 ```
 
-LaunchShield CLI:
+Signed receipt hardening:
 
 ```powershell
 $env:PYTHONPATH='src'
-python -m aion_core.launchshield --project-name 'CLI Markdown Smoke' --workflow 'Agent reads customer data from uploaded PDFs and external email content, then can trigger refunds and send email summaries.' --tools 'MCP filesystem server, shell, payment refund API, email sender, API_KEY in env.' --mcp-config-file test-output\launchshield-cli-smoke\mcp.json --surface MCP --surface OpenAI --control receipts --output test-output\launchshield-cli-smoke\report.md
+python -m unittest tests.test_receipts
 ```
 
 Result:
 
 ```text
-AION LaunchShield Report generated.
-Score: 0/100
-Status: critical
-Scanner confidence: High
-Risk chains: 4
+Ran 6 tests
+OK
+```
+
+Coverage:
+
+- unsigned receipts remain backward-compatible
+- signed receipts verify with the correct HMAC key
+- wrong HMAC key is rejected
+- `--require-signature` rejects unsigned receipts
+- tampered receipts are rejected
+
+Signed receipt CLI smoke:
+
+```powershell
+$env:AION_RECEIPT_SIGNING_KEY='interview-secret'
+python -m aion_core.receipt_cli verify test-output\signed-cli\receipts.jsonl --signing-key-env AION_RECEIPT_SIGNING_KEY --require-signature
+```
+
+Result:
+
+```text
+OK: verified 1 receipt(s)
 ```
 
 Scan:
@@ -203,5 +221,21 @@ Installed wheel smoke:
 ```text
 Successfully installed aion-core-0.8.2
 0.8.2
-aion-launchshield generated a Markdown report with critical launch blockers.
+aion-demo completed with verified receipts.
+```
+
+Local package smoke after Core-only cleanup:
+
+```powershell
+python -m pip install . --no-deps --target test-output\package-smoke-clean
+python -c "import sys; sys.path.insert(0, r'test-output\package-smoke-clean'); import aion_core; print(aion_core.__version__); print(hasattr(aion_core, 'sign_receipt'))"
+```
+
+Result:
+
+```text
+Successfully built aion-core
+Successfully installed aion-core-0.8.2
+0.8.2
+True
 ```

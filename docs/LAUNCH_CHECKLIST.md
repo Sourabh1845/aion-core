@@ -51,7 +51,7 @@ Before GitHub/early-user launch:
 - [x] Enable GitHub Pages from `/docs`.
 - [x] Publish `aion-core==0.8.0` to PyPI.
 - [x] Publish `aion-core==0.8.1` proof-hardened release to PyPI.
-- [ ] Publish `aion-core==0.8.2` LaunchShield CLI release to PyPI.
+- [x] Publish `aion-core==0.8.2` proof-hardened Core release to PyPI.
 - [ ] Add first 20 target users for outreach.
 - [ ] Record and upload 60-90 second demo video.
 - [ ] Add screenshot/video link to README.
@@ -66,8 +66,6 @@ Before GitHub/early-user launch:
 - [x] Add hardcore single-agent capacity test.
 - [x] Add hardcore multi-agent capacity test.
 - [x] Add manual real SDK GitHub workflow.
-- [x] Add AION LaunchShield browser scanner.
-- [x] Add AION LaunchShield CLI scanner.
 
 After public launch:
 
@@ -75,4 +73,4 @@ After public launch:
 - [ ] Publish first launch post.
 - [ ] Send first 20 outreach messages.
 - [ ] Track feedback and requested integrations.
-- [ ] Convert 1-3 testers into setup/audit calls.
+- [ ] Convert 1-3 technical testers into Core integration calls.

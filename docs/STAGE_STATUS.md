@@ -4,8 +4,10 @@ Current source of truth for the 8-stage AION Core plan.
 
 AION Core is **MVP-complete across all 8 stages**. That means the core proof
 exists and can be demonstrated locally. It does not mean the company is already
-production SaaS. Production work remains: hosted auth, signed receipts, billing,
-multi-tenant controls, and enterprise deployment hardening.
+production SaaS. Local HMAC-signed receipt verification now exists as a
+source-level hardening step. Production work still remains: hosted auth,
+tenant-scoped signing key management, billing, multi-tenant controls, and
+enterprise deployment hardening.
 
 | Stage | Name | Status | Notes |
 |---|---|---|---|
@@ -20,6 +22,6 @@ multi-tenant controls, and enterprise deployment hardening.
 
 ## Next Recommended Work
 
-1. Interview-ready framing: AION Core is the infrastructure thesis; LaunchShield and VibeOps are applied proof surfaces.
-2. Production hardening: auth boundaries, hosted DB migrations, signed receipts, and real Slack/webhook delivery.
-3. Distribution wedge: use VibeOps to prove safe AI actions in real small-business workflows.
+1. Production hardening: auth boundaries, hosted DB migrations, signing key management, and real Slack/webhook delivery.
+2. Security hardening: stronger policy tests, audit export checks, and external review.
+3. Deployment hardening: hosted API server, cloud receipt vault, and multi-tenant control boundaries.
